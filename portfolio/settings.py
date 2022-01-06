@@ -73,15 +73,28 @@ TEMPLATES = [
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# postgres://(user)crzixuboovaeyu:(password)2e4ab2d4968fb11366616b027ae7edc16e32df2920078649bbf7b0cd34810e61@(host)ec2-52-23-87-65.compute-1.amazonaws.com:(name)5432/d7cho6s2kn8lpe
+#postgres://cvblayhvbfksvw:693d4538ada4156217f6b7a0f0670c716785bd6d67d9fa14a162d179b41fccd9@ec2-34-232-25-204.compute-1.amazonaws.com:5432/d2722ps0hk1r9v
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.postgresql',
+		'NAME': 'd2722ps0hk1r9v', 
+		'USER': 'cvblayhvbfksvw',
+		'PASSWORD': '693d4538ada4156217f6b7a0f0670c716785bd6d67d9fa14a162d179b41fccd9',
+		'HOST': 'ec2-52-23-87-65.compute-1.amazonaws.com',
+		'PORT': 5432,
+	}
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
