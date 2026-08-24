@@ -1,0 +1,77 @@
+{% load static %}
+<footer class="border-t border-white/5 bg-surface-container-lowest pt-16 pb-12">
+  <div class="max-w-content mx-auto px-5 sm:px-8 lg:px-12">
+    
+    <!-- Watermark / Brand Display -->
+    <div class="mb-12 select-none overflow-hidden">
+      <h2 class="font-display text-[clamp(2.5rem,8vw,6.5rem)] font-extrabold uppercase tracking-tighter text-white/[0.04] leading-none">
+        Azeez Ridwan
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-white/5 text-sm">
+      <div class="flex flex-col gap-3.5">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg overflow-hidden border border-white/15 bg-surface-container flex items-center justify-center shadow-sm">
+            <img src="{% static 'img/logo.png' %}" alt="Logo AR" class="w-full h-full object-cover" width="32" height="32">
+          </div>
+          <span class="font-headline font-bold text-sm tracking-tight uppercase text-white">Azeez Ridwan</span>
+        </div>
+        <p class="text-on-surface-variant text-xs leading-relaxed max-w-xs">
+          {{ t.footer.studio_desc }}
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <span class="font-mono text-xs uppercase tracking-widest text-on-surface-variant/70">{{ t.footer.nav_title }}</span>
+        <div class="flex flex-col space-y-1.5 font-mono text-xs">
+          <a href="#accueil" class="text-on-surface-variant hover:text-white transition-colors">{{ t.nav.work }}</a>
+          <a href="#projets" class="text-on-surface-variant hover:text-white transition-colors">{{ t.nav.projects }}</a>
+          <a href="#competences" class="text-on-surface-variant hover:text-white transition-colors">{{ t.nav.web_ai }}</a>
+          <a href="#services" class="text-on-surface-variant hover:text-white transition-colors">{{ t.nav.services }}</a>
+          <a href="#contact" class="text-on-surface-variant hover:text-white transition-colors">{{ t.nav.contact }}</a>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <span class="font-mono text-xs uppercase tracking-widest text-on-surface-variant/70">{{ t.footer.direct_title }}</span>
+        <div class="flex flex-col space-y-1.5 font-mono text-xs">
+          {% if site.email %}
+          <a href="mailto:{{ site.email }}" class="text-on-surface-variant hover:text-white transition-colors flex items-center gap-1.5">
+            <span>{{ site.email }}</span>
+          </a>
+          {% endif %}
+          {% if site.whatsapp %}
+          <a href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener" class="text-on-surface-variant hover:text-white transition-colors">
+            WhatsApp (+{{ site.whatsapp }})
+          </a>
+          {% endif %}
+          {% if site.telegram %}
+          <a href="https://t.me/{{ site.telegram }}" target="_blank" rel="noopener" class="text-on-surface-variant hover:text-white transition-colors">
+            Telegram (@{{ site.telegram }})
+          </a>
+          {% endif %}
+          <span class="text-on-surface-variant/60">{{ site.location|default:'Abidjan, Côte d’Ivoire' }}</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <span class="font-mono text-xs uppercase tracking-widest text-on-surface-variant/70">{{ t.footer.socials_title }}</span>
+        <div class="flex flex-col space-y-1.5 font-mono text-xs">
+          {% if site.linkedin %}
+          <a href="{{ site.linkedin }}" target="_blank" rel="noopener" class="text-on-surface-variant hover:text-white transition-colors">LinkedIn</a>
+          {% endif %}
+          {% if site.github %}
+          <a href="{{ site.github }}" target="_blank" rel="noopener" class="text-on-surface-variant hover:text-white transition-colors">GitHub</a>
+          {% endif %}
+          <a href="{% url 'core:legal' %}" class="text-on-surface-variant hover:text-white transition-colors">{{ t.footer.legal }}</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-on-surface-variant/60">
+      <p>{{ t.footer.rights }}</p>
+      <p>{{ t.footer.built_with }}</p>
+    </div>
+  </div>
+</footer>

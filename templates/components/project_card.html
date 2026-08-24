@@ -1,0 +1,95 @@
+<article class="bento-card group flex h-full flex-col bg-surface-container border border-white/10 hover:border-white/25 transition-all duration-300 rounded-xl overflow-hidden shadow-xl"
+         data-reveal data-stagger="{{ forloop.counter0 }}">
+  
+  <!-- Thumbnail & Action Trigger -->
+  <button type="button" class="project-thumb relative block w-full cursor-pointer text-left overflow-hidden aspect-[16/10]"
+          hx-get="{% url 'projects:detail' project.pk %}" hx-target="#modal-root" hx-swap="innerHTML"
+          aria-label="Voir l'étude de cas : {{ project.title }}">
+    {% if project.thumbnail %}
+    <img src="{{ project.thumbnail.url }}" alt="Aperçu de {{ project.title }}"
+         class="bento-bg-img absolute inset-0 h-full w-full object-cover object-top mix-blend-luminosity group-hover:mix-blend-normal group-hover:scale-105 transition-all duration-700 opacity-85 group-hover:opacity-100" 
+         loading="lazy" width="1200" height="750">
+    {% else %}
+    <div class="absolute inset-0 flex items-center justify-center bg-surface-container-high font-mono text-xs text-on-surface-variant uppercase tracking-wider">
+      Preview Coming Soon
+    </div>
+    {% endif %}
+    
+    <!-- Gradient Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-background/95 via-background/30 to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
+    
+    <!-- Top Floating Badges -->
+    <div class="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
+      <span class="badge-mono bg-background/80 backdrop-blur-md">
+        {% if project.category == 'video' %}{{ t.projects.tab_video|default:'Vidéo IA' }}{% else %}{{ t.projects.tab_web|default:'Dév Web' }}{% endif %}
+      </span>
+      {% if project.sector %}
+      <span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-variant/90 bg-background/70 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/10">
+        {{ project.sector }}
+      </span>
+      {% endif %}
+    </div>
+
+    <!-- Center Play Button for Video Projects -->
+    {% if project.category == 'video' %}
+    <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+      <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center group-hover:scale-115 group-hover:bg-white group-hover:text-background transition-all duration-300 shadow-xl">
+        <span class="material-symbols-outlined text-[26px] ml-0.5">play_arrow</span>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Bottom Hover Corner Action Indicator -->
+    <div class="absolute bottom-3.5 right-3.5 z-10 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+      <span class="w-8 h-8 rounded-full bg-white text-background flex items-center justify-center shadow-lg">
+        <span class="material-symbols-outlined text-[16px]">
+          {% if project.category == 'video' %}movie{% else %}arrow_outward{% endif %}
+        </span>
+      </span>
+    </div>
+  </button>
+
+  <!-- Card Body -->
+  <div class="flex flex-1 flex-col p-6 sm:p-7">
+    <h3 class="font-headline font-bold text-xl sm:text-2xl text-white group-hover:text-white transition-colors">
+      {{ project.title }}
+    </h3>
+    
+    <p class="mt-2.5 flex-1 font-sans text-sm leading-relaxed text-on-surface-variant line-clamp-3">
+      {{ project.description }}
+    </p>
+
+    <!-- Stack Pills in Monospace -->
+    {% if project.stack %}
+    <ul class="mt-6 flex flex-wrap gap-2" aria-label="Technologies utilisées">
+      {% for tech in project.stack %}
+      <li class="font-mono text-[11px] uppercase tracking-wider text-on-surface-variant/90 border border-white/10 bg-surface-container-lowest/60 px-2.5 py-1 rounded">
+        {{ tech }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- Footer Actions -->
+    <div class="mt-6 flex items-center justify-between border-t border-white/5 pt-4">
+      <button type="button" class="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-white hover:text-on-surface-variant transition-colors"
+              hx-get="{% url 'projects:detail' project.pk %}" hx-target="#modal-root" hx-swap="innerHTML">
+        {% if project.category == 'video' %}
+          {{ t.modal.watch_video|default:'Voir le spot' }}
+          <span class="material-symbols-outlined text-[15px]">play_circle</span>
+        {% else %}
+          {{ t.projects.case_study|default:'Étude de cas' }}
+          <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+        {% endif %}
+      </button>
+
+      {% if project.live_url %}
+      <a href="{{ project.live_url }}" target="_blank" rel="noopener"
+         class="inline-flex items-center gap-1 font-mono text-xs uppercase tracking-wider text-on-surface-variant hover:text-white transition-colors">
+        {{ t.projects.live_site|default:'Site Live' }}
+        <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</article>

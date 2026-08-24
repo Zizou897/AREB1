@@ -1,0 +1,54 @@
+<form id="contact-form" hx-post="{% url 'contact:submit' %}" hx-target="#contact-form" hx-swap="outerHTML" novalidate class="flex flex-col gap-5">
+  <div>
+    <h3 class="font-headline font-extrabold text-xl sm:text-2xl text-white uppercase tracking-tight">{{ t.contact.form_title }}</h3>
+    <p class="mt-1 font-mono text-xs text-on-surface-variant/80">{{ t.contact.form_subtitle }}</p>
+  </div>
+
+  {% if contact_form.non_field_errors %}
+  <div class="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs text-rose-300 font-mono" role="alert">
+    {{ contact_form.non_field_errors|join:' ' }}
+  </div>
+  {% endif %}
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="{{ contact_form.full_name.id_for_label }}" class="mb-2 block font-mono text-xs uppercase tracking-wider text-on-surface-variant">
+        {{ t.contact.name_label }} <span class="text-white">*</span>
+      </label>
+      {{ contact_form.full_name }}
+      {% if contact_form.full_name.errors %}
+      <p class="mt-1.5 font-mono text-xs text-rose-400" role="alert">{{ contact_form.full_name.errors|join:' ' }}</p>
+      {% endif %}
+    </div>
+    <div>
+      <label for="{{ contact_form.email.id_for_label }}" class="mb-2 block font-mono text-xs uppercase tracking-wider text-on-surface-variant">
+        {{ t.contact.email_label }} <span class="text-white">*</span>
+      </label>
+      {{ contact_form.email }}
+      {% if contact_form.email.errors %}
+      <p class="mt-1.5 font-mono text-xs text-rose-400" role="alert">{{ contact_form.email.errors|join:' ' }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div>
+    <label for="{{ contact_form.message.id_for_label }}" class="mb-2 block font-mono text-xs uppercase tracking-wider text-on-surface-variant">
+      {{ t.contact.message_label }} <span class="text-white">*</span>
+    </label>
+    {{ contact_form.message }}
+    {% if contact_form.message.errors %}
+    <p class="mt-1.5 font-mono text-xs text-rose-400" role="alert">{{ contact_form.message.errors|join:' ' }}</p>
+    {% endif %}
+  </div>
+
+  <button type="submit" class="btn-studio-primary mt-3 w-full py-4 text-xs">
+    <span class="htmx-indicator inline-flex items-center gap-2" aria-hidden="true">
+      <span class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
+      {{ t.contact.btn_sending }}
+    </span>
+    <span class="inline-flex items-center gap-2">
+      {{ t.contact.btn_send }}
+      <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+    </span>
+  </button>
+</form>

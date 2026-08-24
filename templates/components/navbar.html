@@ -1,0 +1,106 @@
+{% load static %}
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 bg-background/80 backdrop-blur-xl border-b border-white/5 transition-all duration-300">
+  <div class="h-20 max-w-content mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between">
+    <!-- Brand / Logo -->
+    <a href="#" class="flex items-center gap-3.5 group" aria-label="Azeez Ridwan — Accueil">
+      <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/15 bg-surface-container flex items-center justify-center group-hover:border-white/40 transition-all duration-200 shadow-sm">
+        <img src="{% static 'img/logo.png' %}" alt="Logo AR" class="w-full h-full object-cover" width="40" height="40">
+      </div>
+      <span class="font-headline font-bold text-base lg:text-lg tracking-tight uppercase text-white">
+        Azeez Ridwan
+      </span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex items-center gap-7 lg:gap-8" aria-label="Navigation principale">
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#accueil">{{ t.nav.work }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#projets">{{ t.nav.projects }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#competences">{{ t.nav.web_ai }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#services">{{ t.nav.services }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#about">{{ t.nav.about }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#contact">{{ t.nav.contact }}</a>
+    </nav>
+
+    <!-- Header Actions & Controls -->
+    <div class="flex items-center gap-2.5 sm:gap-3.5">
+      
+      <!-- Theme Toggle (Light / Dark) -->
+      <button id="theme-toggle" type="button" aria-label="Basculer le thème" title="Changer de thème"
+              class="w-9 h-9 rounded-full flex items-center justify-center bg-surface-container border border-white/10 text-on-surface-variant hover:text-white transition-all duration-200 shadow-sm focus:outline-none cursor-pointer">
+        <span class="theme-icon-dark material-symbols-outlined text-[18px]">light_mode</span>
+        <span class="theme-icon-light material-symbols-outlined text-[18px]" style="display:none;">dark_mode</span>
+      </button>
+
+      <!-- Language Switcher Pill -->
+      <div class="flex items-center p-1 rounded-full bg-surface-container border border-white/10 font-mono text-xs" role="group" aria-label="Language selector">
+        <a href="{% url 'core:set_language' 'fr' %}"
+           class="flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all duration-200 {% if current_lang == 'fr' %}bg-white text-background font-bold shadow-sm{% else %}text-on-surface-variant hover:text-white{% endif %}"
+           aria-label="Passer en français"
+           title="Français">
+          <svg class="w-3.5 h-2.5 rounded-[2px] overflow-hidden flex-shrink-0 shadow-sm inline-block" viewBox="0 0 3 2" aria-hidden="true">
+            <rect width="1" height="2" fill="#002395"/>
+            <rect width="1" height="2" x="1" fill="#FFFFFF"/>
+            <rect width="1" height="2" x="2" fill="#ED2939"/>
+          </svg>
+          <span>FR</span>
+        </a>
+        <a href="{% url 'core:set_language' 'en' %}"
+           class="flex items-center gap-1.5 px-2.5 py-1 rounded-full transition-all duration-200 {% if current_lang == 'en' %}bg-white text-background font-bold shadow-sm{% else %}text-on-surface-variant hover:text-white{% endif %}"
+           aria-label="Switch to English"
+           title="English">
+          <svg class="w-3.5 h-2.5 rounded-[2px] overflow-hidden flex-shrink-0 shadow-sm inline-block" viewBox="0 0 60 40" aria-hidden="true">
+            <clipPath id="uk-flag-nav"><rect width="60" height="40"/></clipPath>
+            <g clip-path="url(#uk-flag-nav)">
+              <rect width="60" height="40" fill="#012169"/>
+              <path d="M0,0 L60,40 M60,0 L0,40" stroke="#FFFFFF" stroke-width="8"/>
+              <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="4.5"/>
+              <path d="M30,0 v40 M0,20 h60" stroke="#FFFFFF" stroke-width="13"/>
+              <path d="M30,0 v40 M0,20 h60" stroke="#C8102E" stroke-width="8"/>
+            </g>
+          </svg>
+          <span>EN</span>
+        </a>
+      </div>
+
+      <a href="#contact" class="hidden sm:inline-flex btn-studio-primary text-xs py-2.5 px-5">
+        {{ t.nav.start_project }}
+        <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+      </a>
+
+      <!-- Mobile Hamburger -->
+      <button id="nav-burger" type="button" aria-expanded="false" aria-controls="nav-mobile" aria-label="Ouvrir le menu"
+              class="flex md:hidden h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-white hover:bg-white/5 transition-colors">
+        <span class="material-symbols-outlined text-[22px]">menu</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="nav-mobile" class="hidden border-b border-white/10 bg-surface-container-lowest/95 px-5 pb-6 pt-4 backdrop-blur-2xl md:hidden">
+    <nav class="flex flex-col space-y-3 font-mono text-sm uppercase tracking-wider">
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#accueil">{{ t.nav.work }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#projets">{{ t.nav.projects }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#competences">{{ t.nav.web_ai }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#services">{{ t.nav.services }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#about">{{ t.nav.about }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#contact">{{ t.nav.contact }}</a>
+      
+      <div class="pt-3 pb-2 border-t border-white/10 flex items-center justify-between">
+        <button id="theme-toggle-mobile" type="button" aria-label="Basculer le thème"
+                class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container border border-white/10 font-mono text-xs text-on-surface-variant hover:text-white transition-all">
+          <span class="theme-icon-dark material-symbols-outlined text-[16px]">light_mode</span>
+          <span class="theme-icon-light material-symbols-outlined text-[16px]" style="display:none;">dark_mode</span>
+          <span>Thème</span>
+        </button>
+      </div>
+
+      <div class="pt-2">
+        <a href="#contact" class="btn-studio-primary w-full justify-center text-xs py-3">
+          {{ t.nav.start_project }}
+          <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+

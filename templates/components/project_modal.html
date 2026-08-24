@@ -1,0 +1,116 @@
+<div class="modal-backdrop overflow-y-auto p-4 sm:p-8 flex items-center justify-center min-h-screen" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-panel relative mx-auto my-8 w-full max-w-4xl overflow-hidden rounded-2xl border border-white/15 bg-surface-container shadow-2xl shadow-black/80">
+
+    <!-- Close Button -->
+    <button type="button" data-modal-close
+            class="absolute right-5 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-background/80 text-white backdrop-blur-md transition-all hover:bg-white hover:text-background"
+            aria-label="Fermer la fenêtre">
+      <span class="material-symbols-outlined text-[20px]">close</span>
+    </button>
+
+    <!-- Media Header (Video embed or Full width thumbnail) -->
+    {% if project.category == 'video' and project.video_url %}
+    <div class="bg-black aspect-video w-full">
+      <iframe src="{{ project.video_embed_url }}" title="Vidéo : {{ project.title }}"
+              class="h-full w-full border-b border-white/10" allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
+              allowfullscreen loading="lazy"></iframe>
+    </div>
+    {% elif project.thumbnail %}
+    <div class="relative w-full aspect-[21/9] sm:aspect-[16/8] overflow-hidden bg-surface-container-lowest">
+      <img src="{{ project.thumbnail.url }}" alt="Aperçu de {{ project.title }}"
+           class="absolute inset-0 h-full w-full object-cover object-top">
+      <div class="absolute inset-0 bg-gradient-to-t from-surface-container via-surface-container/30 to-transparent"></div>
+    </div>
+    {% endif %}
+
+    <!-- Modal Content -->
+    <div class="p-6 sm:p-10">
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+        <span class="badge-mono bg-white/10 text-white">
+          {{ project.get_category_display }}{% if project.sector %} · {{ project.sector }}{% endif %}
+        </span>
+        <span class="font-mono text-xs text-on-surface-variant/70">{{ t.modal.case_study }}</span>
+      </div>
+
+      <h2 id="modal-title" class="font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-white mt-2">
+        {{ project.title }}
+      </h2>
+
+      <p class="mt-4 font-sans text-base leading-relaxed text-on-surface-variant">
+        {{ project.description }}
+      </p>
+
+      <!-- Problem, Solution, Results Blocks -->
+      {% if project.problem or project.solution or project.result %}
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% if project.problem %}
+        <div class="rounded-xl border border-white/10 bg-surface-container-lowest p-5 flex flex-col">
+          <span class="font-mono text-[11px] uppercase tracking-wider text-rose-300 font-semibold mb-2">
+            // {{ t.modal.problem }}
+          </span>
+          <p class="font-sans text-xs leading-relaxed text-on-surface-variant flex-1">
+            {{ project.problem }}
+          </p>
+        </div>
+        {% endif %}
+
+        {% if project.solution %}
+        <div class="rounded-xl border border-white/10 bg-surface-container-lowest p-5 flex flex-col">
+          <span class="font-mono text-[11px] uppercase tracking-wider text-cyan font-semibold mb-2">
+            // {{ t.modal.solution }}
+          </span>
+          <p class="font-sans text-xs leading-relaxed text-on-surface-variant flex-1">
+            {{ project.solution }}
+          </p>
+        </div>
+        {% endif %}
+
+        {% if project.result %}
+        <div class="rounded-xl border border-white/10 bg-surface-container-lowest p-5 flex flex-col">
+          <span class="font-mono text-[11px] uppercase tracking-wider text-emerald-300 font-semibold mb-2">
+            // {{ t.modal.result }}
+          </span>
+          <p class="font-sans text-xs leading-relaxed text-on-surface-variant flex-1">
+            {{ project.result }}
+          </p>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <!-- Tech Stack -->
+      {% if project.stack %}
+      <div class="mt-8">
+        <span class="font-mono text-xs uppercase tracking-widest text-on-surface-variant/80 block mb-3">
+          {{ t.modal.tech_arch }}
+        </span>
+        <ul class="flex flex-wrap gap-2">
+          {% for tech in project.stack %}
+          <li class="font-mono text-xs uppercase tracking-wider text-white border border-white/15 bg-surface-container-lowest px-3 py-1.5 rounded-md">
+            {{ tech }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <!-- Footer Buttons -->
+      <div class="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6">
+        <div class="flex flex-wrap gap-3">
+          {% if project.live_url %}
+          <a href="{{ project.live_url }}" target="_blank" rel="noopener"
+             class="btn-studio-primary text-xs py-3 px-6">
+            {{ t.modal.visit_site }}
+            <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+          </a>
+          {% endif %}
+        </div>
+
+        <button type="button" data-modal-close
+                class="btn-studio-secondary text-xs py-3 px-6">
+          {{ t.modal.close }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
