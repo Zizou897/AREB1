@@ -9,6 +9,7 @@ echo "🚀 Déploiement en cours pour Azeez Ridwan Portfolio..."
 cd $PROJECT_DIR
 
 echo "📥 Récupération des dernières modifications..."
+git config --global --add safe.directory "$PROJECT_DIR" 2>/dev/null || true
 git pull origin main
 
 echo "📦 Mise à jour de l'environnement virtuel..."

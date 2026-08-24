@@ -36,6 +36,7 @@ chmod -R 755 /var/log/gunicorn
 
 if [ -d "$PROJECT_DIR" ]; then
   chown -R www-data:www-data "$PROJECT_DIR"
+  git config --global --add safe.directory "$PROJECT_DIR" 2>/dev/null || true
   echo -e "${GREEN}✓ Droits assignés à www-data pour $PROJECT_DIR${NC}"
 else
   echo -e "${YELLOW}⚠️ Attention : Le dossier $PROJECT_DIR n'a pas été trouvé. Vérifiez le chemin.${NC}"
