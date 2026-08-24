@@ -7,8 +7,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default='dev-only-insecure-key')
 DEBUG = config('DEBUG', default=True, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
-CSRF_TRUSTED_ORIGINS = [f'https://{h}' for h in ALLOWED_HOSTS if h not in ('localhost', '127.0.0.1', '*')]
+ALLOWED_HOSTS = config(
+    'ALLOWED_HOSTS',
+    default='localhost,127.0.0.1,azeezridwan.tech,www.azeezridwan.tech',
+    cast=Csv()
+)
+CSRF_TRUSTED_ORIGINS = list(set(
+    [f'https://{h.strip()}' for h in ALLOWED_HOSTS if h.strip() not in ('localhost', '127.0.0.1', '*')] +
+    [f'http://{h.strip()}' for h in ALLOWED_HOSTS if h.strip() not in ('localhost', '127.0.0.1', '*')]
+))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
