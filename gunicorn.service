@@ -1,0 +1,17 @@
+[Unit]
+Description=Gunicorn — Azeez Ridwan Portfolio (AREB1)
+After=network.target
+
+[Service]
+Type=notify
+
+User=www-data
+Group=www-data
+
+WorkingDirectory=/var/www/areb1
+ExecStart=/var/www/areb1/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8000 --access-logfile /var/log/gunicorn/areb1_access.log --error-logfile /var/log/gunicorn/areb1_error.log config.wsgi:application
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
