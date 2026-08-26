@@ -4,166 +4,104 @@
 {% block content %}
 
 <!-- ============================== HERO ============================== -->
-<section id="accueil" class="relative overflow-hidden pt-28 sm:pt-36 pb-16 lg:pb-24">
+<section id="accueil" class="relative overflow-hidden min-h-screen flex flex-col pt-24 sm:pt-28">
   <!-- Subtle Ambient Glow -->
   <div class="pointer-events-none absolute top-0 right-0 w-2/3 h-[700px] bg-gradient-to-bl from-white/5 via-surface to-transparent opacity-40 blur-3xl -z-10" aria-hidden="true"></div>
 
-  <div class="max-w-content mx-auto px-5 sm:px-8 lg:px-12">
+  <!-- Left Column: Editorial Brand & Meta (Desktop) — anchored to the section, not the compact content row -->
+  <div class="hidden lg:flex flex-col items-center justify-between absolute left-5 xl:left-8 top-28 bottom-48 z-20">
+    <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/15 bg-surface-container flex items-center justify-center shadow-md">
+      <img src="{% static 'img/logo.png' %}" alt="Logo AR" class="w-full h-full object-cover" width="40" height="40">
+    </div>
+    <div class="flex flex-col items-center gap-4">
+      <div class="w-px h-14 bg-white/15"></div>
+      <span class="font-mono text-[10px] text-on-surface-variant [writing-mode:vertical-rl] rotate-180 tracking-[0.15em] uppercase whitespace-nowrap opacity-75">
+        {{ t.hero.meta_location }}
+      </span>
+    </div>
+  </div>
+
+  <div class="max-w-content mx-auto px-5 sm:px-8 lg:px-12 flex-1 flex items-center w-full py-10">
     <div class="flex flex-col lg:flex-row w-full gap-8 lg:gap-14 relative">
-      
-      <!-- Left Column: Editorial Brand & Meta (Desktop) -->
-      <div class="hidden lg:flex flex-col justify-between items-center w-12 shrink-0 relative z-20 py-2">
-        <div class="flex flex-col items-center gap-5">
-          <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/15 bg-surface-container flex items-center justify-center shadow-md">
-            <img src="{% static 'img/logo.png' %}" alt="Logo AR" class="w-full h-full object-cover" width="40" height="40">
-          </div>
-          <div class="w-px h-20 bg-white/15"></div>
-        </div>
-        <div class="flex flex-col items-center gap-6 sticky top-36">
-          <span class="font-mono text-[11px] text-on-surface-variant [writing-mode:vertical-rl] rotate-180 tracking-[0.25em] uppercase whitespace-nowrap opacity-75">
-            {{ t.hero.meta_location }}
-          </span>
-          <div class="w-px h-24 bg-white/15 my-2"></div>
-          <span class="font-mono text-[11px] text-on-surface-variant [writing-mode:vertical-rl] rotate-180 tracking-[0.25em] uppercase whitespace-nowrap opacity-75">
-            {{ t.hero.meta_available }}
-          </span>
-        </div>
-      </div>
 
-      <!-- Right Column: Main Hero Content & Bento Grid -->
-      <div class="flex flex-col w-full z-10">
-        
-        <!-- Status Badge (Mobile / Tablet) -->
-        <div class="flex lg:hidden items-center gap-2 mb-6">
-          <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface-container-low px-3.5 py-1.5 font-mono text-xs text-on-surface-variant">
-            <span class="relative flex h-2 w-2">
-              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span>
-              <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+      <!-- Right Column: Main Hero Content -->
+      <div class="flex flex-col lg:flex-row lg:items-center w-full gap-12 lg:gap-16 z-10 lg:pl-20">
+
+        <!-- Text Column -->
+        <div class="flex flex-col w-full lg:w-[54%] xl:w-1/2 shrink-0">
+
+          <!-- Status Badge (Mobile / Tablet) -->
+          <div class="flex lg:hidden items-center gap-2 mb-6">
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface-container-low px-3.5 py-1.5 font-mono text-xs text-on-surface-variant">
+              <span class="relative flex h-2 w-2">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full {% if site.available %}bg-emerald-400{% else %}bg-amber-400{% endif %} opacity-60"></span>
+                <span class="relative inline-flex h-2 w-2 rounded-full {% if site.available %}bg-emerald-400{% else %}bg-amber-400{% endif %}"></span>
+              </span>
+              {{ t.hero.badge }}
             </span>
-            {{ t.hero.badge }}
-          </span>
-        </div>
+          </div>
 
-        <!-- Monumental Headline -->
-        <div class="flex flex-col gap-4 max-w-5xl" data-reveal>
-          <h1 class="font-display text-[clamp(2.75rem,7vw,6.5rem)] font-extrabold leading-[0.9] tracking-tighter uppercase text-white">
-            {{ t.hero.title_1 }} <br/>
-            <span class="text-on-surface-variant/60">{{ t.hero.title_2 }}</span>
-          </h1>
-        </div>
+          <!-- Headline -->
+          <div class="flex flex-col gap-4" data-reveal>
+            <h1 class="font-display text-[clamp(2.25rem,4.6vw,4.25rem)] font-semibold leading-[1.08] tracking-tight text-white">
+              {{ t.hero.title_1 }} <br/>
+              <span class="text-on-surface-variant/70">{{ t.hero.title_2 }}</span>
+            </h1>
+          </div>
 
-        <!-- Subtitle & Action Buttons -->
-        <div class="flex flex-col md:flex-row gap-8 items-start md:items-end mt-10 md:mt-14 pb-8 w-full justify-between" data-reveal data-stagger="1">
-          <p class="font-sans text-base sm:text-lg text-on-surface-variant max-w-xl leading-relaxed">
+          <!-- Subtitle -->
+          <p class="font-sans text-base sm:text-lg text-on-surface-variant leading-relaxed mt-8 max-w-lg" data-reveal data-stagger="1">
             {{ t.hero.subtitle }}
           </p>
-          <div class="flex flex-col sm:flex-row gap-4 shrink-0 w-full sm:w-auto">
-            <a href="#projets" class="btn-studio-secondary w-full sm:w-auto">
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row gap-4 mt-10" data-reveal data-stagger="2">
+            <a href="#projets" class="btn-studio-secondary w-full sm:w-auto" data-magnetic="0.3">
               {{ t.hero.btn_work }}
               <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
             </a>
-            <a href="#contact" class="btn-studio-primary w-full sm:w-auto">
+            <a href="#contact" class="btn-studio-primary w-full sm:w-auto" data-magnetic="0.3">
               {{ t.hero.btn_start }}
               <span class="material-symbols-outlined text-[18px]">arrow_outward</span>
             </a>
           </div>
         </div>
 
-        <!-- ==================== HERO BENTO GRID ==================== -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-7 mt-8 relative w-full" data-reveal data-stagger="2">
-          
-          <!-- Bento Tile 1: Web App Interface (8 cols) -->
-          <div class="bento-card md:col-span-8 aspect-[16/10] sm:aspect-[16/10] bg-surface-container group">
-            <div class="bento-bg-img absolute inset-0 bg-cover bg-center mix-blend-luminosity group-hover:mix-blend-normal opacity-75 group-hover:opacity-100"
-                 style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDYzSYRc6HKlmcVr_-ozLMIsHz4O9T2xAnz9aKSO2hIaoPOoQw3uwZ0jY76xuyjnk8i6uFqb8XGF2iyaZBZCYrpJEobzuVE1QjQUOdN5uLjujFfYu3ybrgHomU6AINeEjrVdikyUnd5kbjI51dfsYZA0o7okbCRxVXtF_4IWakGbWmi-qWKHyohToAA08aBlLq3a7WdaCQ8SCAwwUnEYXGXU6MeBHyXp0ot-1qhE1PULuxvHrlr4CH92g');">
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent"></div>
-            
-            <div class="absolute bottom-6 left-6 right-6 flex items-end justify-between z-10">
-              <div>
-                <div class="flex flex-wrap gap-2 mb-2">
-                  <span class="badge-mono">{{ t.hero.tile1_tag1 }}</span>
-                  <span class="badge-mono">{{ t.hero.tile1_tag2 }}</span>
-                </div>
-                <h3 class="font-headline font-bold text-xl sm:text-2xl text-white">{{ t.hero.tile1_title }}</h3>
+        <!-- Photo Column -->
+        <div class="w-full flex justify-center lg:justify-end lg:w-[46%] xl:w-1/2" data-reveal data-stagger="1">
+          <div class="flex flex-col items-center gap-5">
+            <div class="relative w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80">
+              <canvas id="hero-particles" class="absolute pointer-events-none" data-bleed="32" data-bleed-sm="48" aria-hidden="true"></canvas>
+              <div class="relative w-full h-full rounded-full overflow-hidden border border-white/10 bg-surface-container shadow-md">
+                <picture class="absolute inset-0 block h-full w-full">
+                  <source srcset="{% static 'img/portrait_face.webp' %}" type="image/webp">
+                  <img src="{% static 'img/portrait_face.jpg' %}" alt="Azeez Ridwan — Développeur Python/Django et Créateur IA"
+                       class="h-full w-full object-cover object-top" width="640" height="640">
+                </picture>
               </div>
-              <a href="#projets" class="hidden sm:flex w-10 h-10 rounded-full bg-white/10 backdrop-blur-md items-center justify-center text-white group-hover:bg-white group-hover:text-background transition-colors" aria-label="{{ t.hero.btn_work }}">
-                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
-              </a>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <span class="badge-mono bg-surface-container-low border border-white/10 text-white">{{ site.name }}</span>
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full {% if site.available %}bg-emerald-400{% else %}bg-amber-400{% endif %} opacity-60"></span>
+                <span class="relative inline-flex h-2.5 w-2.5 rounded-full {% if site.available %}bg-emerald-400{% else %}bg-amber-400{% endif %}"></span>
+              </span>
             </div>
           </div>
-
-          <!-- Bento Tile 2: Data Dashboard (4 cols) -->
-          <div class="bento-card md:col-span-4 aspect-square md:-ml-8 md:mt-16 bg-surface-container-high z-10 group shadow-2xl">
-            <div class="bento-bg-img absolute inset-0 bg-cover bg-center opacity-85 group-hover:opacity-100"
-                 style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDMGZLlhqV-UlWr5xyMMif5X3MsWg6fz-vQnjrhJLSShJYl_EpRQQMtITEIiU25Ak60EOhjszCPfp4iBqgrcuAFfUsDOYkYDarvSZ_duUqc8U08oVZqU1n_v_PoFecHuToAfl3JTkMqquQfXSZtPvRwrllkt24eBSHlTe_wioUIRKZjl5XoxaQQODC96XNVqIn8aifjW7G8C3Lm-xpkQ2aY4mj-UJ9AQ8KO6tWP61sw8j-1nPAtw110xg');">
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent"></div>
-            
-            <div class="absolute top-5 right-5 z-10">
-              <span class="badge-mono bg-white/90 text-background font-semibold">{{ t.hero.tile2_badge }}</span>
-            </div>
-            
-            <div class="absolute bottom-6 left-6 z-10">
-              <span class="font-mono text-xs text-on-surface-variant uppercase tracking-wider block mb-1">{{ t.hero.tile2_arch }}</span>
-              <p class="font-headline font-bold text-lg text-white">{{ t.hero.tile2_title }}</p>
-            </div>
-          </div>
-
-          <!-- Bento Tile 3: AI Generated Visual (5 cols) -->
-          <div class="bento-card md:col-span-5 aspect-[3/4] md:-mt-16 z-20 bg-surface-container-lowest group shadow-2xl">
-            <div class="bento-bg-img absolute inset-0 bg-cover bg-center grayscale group-hover:grayscale-0 opacity-90 transition-all duration-700"
-                 style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCP8rjMgCvlBfT9LZgI1hpIhNv5zmmXrk8uaBR-X9554gKwxxsdHWo5dIIkT_WeCiMtNlBhLZYYZHlZxVVQXmcnpLunXq6Ddv2ARbx8ZhE55ZA8WqBNpc7x2vUmjgSWKzQcq3UngHg5XEZ0H2ATwCLGt0UZwbOpvx6G2wPoTbkWlbXPElSfsViwkhWfwXIEz0klOFur-OYhRwWweHggBJsB-OYyVfPmB2rPY_iXR7YVMygplbZs9h_w5A');">
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-background/95 via-background/30 to-transparent"></div>
-            
-            <div class="absolute bottom-6 left-6 right-6 z-10">
-              <span class="badge-mono mb-2 inline-block">{{ t.hero.tile3_badge }}</span>
-              <h3 class="font-headline font-bold text-2xl text-white">{{ t.hero.tile3_title }}</h3>
-              <p class="font-sans text-xs text-on-surface-variant mt-1">{{ t.hero.tile3_sub }}</p>
-            </div>
-          </div>
-
-          <!-- Bento Tile 4: Cinematic Video Reel (7 cols) -->
-          <div class="bento-card md:col-span-7 aspect-video md:mt-8 bg-surface-container-low group shadow-xl">
-            <div class="bento-bg-img absolute inset-0 bg-cover bg-center mix-blend-screen opacity-70 group-hover:opacity-100"
-                 style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZ-_0gjJfBkVkI7F5mdR_kki5KNgH3bMTCLp6hTc_qNl2VNX2loN5EKekhLjqZ0Xfqg6lD7_jMeKfFaFlA6_fKuYLLPLz3tDvmo_umcE--tF1cNUJsAmisIgecrjwWjdy1cupDgdX6ggiFWF8FFc-U4ryG2-Q-JOtdUEdirOc-AyMDR2mHxsV2SjIW06brhj3hwPnA6T8DtSPdlh1McUfMqr5Kn7CiFLLxjSJfPZQVYUTJyUUMW_yyCg');">
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
-            
-            <div class="absolute top-5 left-5 z-10">
-              <span class="badge-mono">{{ t.hero.tile4_badge }}</span>
-            </div>
-
-            <!-- Play Button with Ripple Effect -->
-            <div class="absolute inset-0 flex items-center justify-center z-10">
-              <a href="#projets" class="play-btn-pulse w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-background shadow-2xl group-hover:scale-110 group-hover:bg-white transition-all duration-300"
-                 aria-label="{{ t.hero.tile4_cta }}">
-                <span class="material-symbols-outlined text-[32px] sm:text-[36px] ml-1 text-background">play_arrow</span>
-              </a>
-            </div>
-
-            <div class="absolute bottom-5 left-5 right-5 flex items-center justify-between z-10">
-              <span class="font-mono text-xs text-on-surface-variant">{{ t.hero.tile4_tools }}</span>
-              <span class="font-mono text-xs text-white uppercase tracking-wider hidden sm:inline-block">{{ t.hero.tile4_cta }}</span>
-            </div>
-          </div>
-
         </div>
-        <!-- End Bento Grid -->
 
       </div>
     </div>
   </div>
 
   <!-- Bandeau Métriques Studio -->
-  <div class="relative border-y border-white/5 bg-surface-container-lowest/60 mt-16 lg:mt-24">
-    <dl class="max-w-content mx-auto grid grid-cols-2 gap-y-8 px-5 py-10 sm:px-8 lg:px-12 lg:grid-cols-4">
+  <div class="relative border-y border-white/5 bg-surface-container-lowest/60 mt-6 lg:mt-8">
+    <dl class="max-w-content mx-auto grid grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
       {% for metric in t.metrics %}
-      <div class="flex flex-col-reverse text-center sm:text-left" data-reveal data-stagger="{{ forloop.counter0 }}">
-        <dt class="mt-1 font-mono text-xs uppercase tracking-wider text-on-surface-variant/80">{{ metric.label }}</dt>
-        <dd class="font-headline text-3xl sm:text-4xl font-extrabold text-white">
-          {{ metric.value }}<span class="text-white/40">{{ metric.suffix }}</span>
+      <div class="flex flex-col-reverse gap-1.5 px-5 py-10 sm:px-8 lg:px-10 text-center sm:text-left" data-reveal data-stagger="{{ forloop.counter0 }}">
+        <dt class="font-mono text-xs uppercase tracking-wider text-on-surface-variant/80">{{ metric.label }}</dt>
+        <dd class="font-headline text-3xl sm:text-4xl lg:text-5xl font-semibold text-white tabular-nums leading-none">
+          <span data-counter>{{ metric.value }}</span><span class="text-white/40">{{ metric.suffix }}</span>
         </dd>
       </div>
       {% endfor %}
@@ -178,36 +116,24 @@
     <!-- Section Header with Editorial Split -->
     <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 border-b border-white/5" data-reveal>
       <div class="max-w-2xl">
-        <span class="kicker mb-3">{{ t.projects.kicker }}</span>
-        <h2 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight uppercase text-white">
+        <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight text-white">
           {{ t.projects.title_1 }}<br/>
           <span class="text-on-surface-variant/60">{{ t.projects.title_2 }}</span>
         </h2>
         <p class="mt-4 font-sans text-sm sm:text-base text-on-surface-variant leading-relaxed">
-          {{ t.projects.subtitle }}
+          {{ t.projects.teaser_subtitle }}
         </p>
       </div>
 
-      <!-- Category Filter Pills (HTMX) -->
-      <div class="flex items-center gap-2 rounded-xl border border-white/10 bg-surface-container-low p-1.5 self-start lg:self-end" role="group" aria-label="Filtrer les projets">
-        <button type="button" class="filter-tab is-active rounded-lg px-4 py-2 text-xs font-mono uppercase tracking-wider transition-all"
-                hx-get="{% url 'projects:list' %}?category=all" hx-target="#projects-grid" hx-swap="innerHTML">
-          {{ t.projects.tab_all }}
-        </button>
-        <button type="button" class="filter-tab rounded-lg px-4 py-2 text-xs font-mono uppercase tracking-wider transition-all"
-                hx-get="{% url 'projects:list' %}?category=web" hx-target="#projects-grid" hx-swap="innerHTML">
-          {{ t.projects.tab_web }}
-        </button>
-        <button type="button" class="filter-tab rounded-lg px-4 py-2 text-xs font-mono uppercase tracking-wider transition-all"
-                hx-get="{% url 'projects:list' %}?category=video" hx-target="#projects-grid" hx-swap="innerHTML">
-          {{ t.projects.tab_video }}
-        </button>
-      </div>
+      <a href="{% url 'projects:list' %}" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-white hover:text-on-surface-variant transition-colors self-start lg:self-end shrink-0" data-magnetic="0.2">
+        {{ t.projects.view_all }}
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
     </div>
 
-    <!-- Projects Dynamic Grid -->
+    <!-- Featured Projects -->
     <div id="projects-grid" class="mt-12 grid gap-6 sm:gap-8" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));">
-      {% include 'components/projects_grid.html' %}
+      {% include 'components/projects_grid.html' with projects=featured_projects %}
     </div>
 
     <!-- AI Video Production Highlight Showcase -->
@@ -218,7 +144,7 @@
             <span class="badge-mono bg-white/10 text-white">{{ t.projects.ai_banner_badge }}</span>
             <span class="font-mono text-xs text-on-surface-variant">{{ t.projects.ai_banner_sub }}</span>
           </div>
-          <h3 class="font-headline text-2xl sm:text-3xl font-extrabold text-white">
+          <h3 class="font-headline text-2xl sm:text-3xl font-semibold text-white">
             {{ t.projects.ai_banner_title }} <span class="text-white/50">{{ t.projects.ai_banner_title_accent }}</span>
           </h3>
           <p class="mt-3 font-sans text-sm sm:text-base leading-relaxed text-on-surface-variant">
@@ -252,8 +178,7 @@
     <!-- Header -->
     <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-16 border-b border-white/5" data-reveal>
       <div class="max-w-3xl">
-        <span class="kicker mb-3">{{ t.web_dev.kicker }}</span>
-        <h2 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight uppercase text-white leading-[0.95]">
+        <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight text-white leading-[1.05]">
           {{ t.web_dev.title_1 }}<br/>
           <span class="text-on-surface-variant/60">{{ t.web_dev.title_2 }}</span>
         </h2>
@@ -286,7 +211,7 @@
             <span class="material-symbols-outlined text-white/40 group-hover:text-white transition-colors">memory</span>
           </div>
           <div>
-            <h3 class="font-headline font-extrabold text-2xl uppercase tracking-tight text-white mb-2">Django</h3>
+            <h3 class="font-headline font-semibold text-2xl tracking-tight text-white mb-2">Django</h3>
             <p class="font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed">
               {{ t.web_dev.django_desc }}
             </p>
@@ -300,7 +225,7 @@
             <span class="material-symbols-outlined text-white/40 group-hover:text-white transition-colors">bolt</span>
           </div>
           <div>
-            <h3 class="font-headline font-extrabold text-2xl uppercase tracking-tight text-white mb-2">HTMX</h3>
+            <h3 class="font-headline font-semibold text-2xl tracking-tight text-white mb-2">HTMX</h3>
             <p class="font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed">
               {{ t.web_dev.htmx_desc }}
             </p>
@@ -314,7 +239,7 @@
               <span class="badge-mono text-[10px]">{{ t.web_dev.tailwind_badge }}</span>
               <span class="material-symbols-outlined text-white/40 group-hover:text-white text-[18px]">palette</span>
             </div>
-            <h3 class="font-headline font-extrabold text-lg uppercase text-white">TailwindCSS</h3>
+            <h3 class="font-headline font-semibold text-lg text-white">TailwindCSS</h3>
           </div>
 
           <div class="flex-1 bento-card p-6 flex flex-col justify-between group">
@@ -322,7 +247,7 @@
               <span class="badge-mono text-[10px]">{{ t.web_dev.db_badge }}</span>
               <span class="material-symbols-outlined text-white/40 group-hover:text-white text-[18px]">database</span>
             </div>
-            <h3 class="font-headline font-extrabold text-lg uppercase text-white">MySQL / PostgreSQL</h3>
+            <h3 class="font-headline font-semibold text-lg text-white">MySQL / PostgreSQL</h3>
           </div>
         </div>
 
@@ -333,8 +258,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 pt-12 border-t border-white/5" data-reveal data-stagger="2">
       <div class="lg:col-span-4">
         <div class="lg:sticky lg:top-36 flex flex-col gap-3">
-          <span class="kicker">{{ t.web_dev.capabilities_kicker }}</span>
-          <h3 class="font-headline text-2xl sm:text-3xl font-extrabold uppercase text-white tracking-tight">
+          <h3 class="font-headline text-2xl sm:text-3xl font-semibold text-white tracking-tight">
             {{ t.web_dev.capabilities_title_1 }}<br/>
             {{ t.web_dev.capabilities_title_2 }}
           </h3>
@@ -347,43 +271,39 @@
       <div class="lg:col-span-8 flex flex-col divide-y divide-white/10 border-t lg:border-t-0 border-b border-white/10">
         
         <div class="group py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-white/[0.02] px-4 rounded-lg">
-          <div class="sm:w-1/3">
-            <h4 class="font-headline font-bold text-lg text-white uppercase group-hover:text-white transition-colors">{{ t.web_dev.cap1_title }}</h4>
+          <div class="sm:w-1/3 shrink-0">
+            <h4 class="font-headline font-semibold text-lg text-white group-hover:text-white transition-colors">{{ t.web_dev.cap1_title }}</h4>
           </div>
-          <p class="sm:w-1/2 font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+          <p class="sm:flex-1 font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed">
             {{ t.web_dev.cap1_desc }}
           </p>
-          <span class="font-mono text-xs text-white/30 text-right sm:w-1/6 hidden sm:block">01</span>
         </div>
 
         <div class="group py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-white/[0.02] px-4 rounded-lg">
-          <div class="sm:w-1/3">
-            <h4 class="font-headline font-bold text-lg text-white uppercase group-hover:text-white transition-colors">{{ t.web_dev.cap2_title }}</h4>
+          <div class="sm:w-1/3 shrink-0">
+            <h4 class="font-headline font-semibold text-lg text-white group-hover:text-white transition-colors">{{ t.web_dev.cap2_title }}</h4>
           </div>
-          <p class="sm:w-1/2 font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+          <p class="sm:flex-1 font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed">
             {{ t.web_dev.cap2_desc }}
           </p>
-          <span class="font-mono text-xs text-white/30 text-right sm:w-1/6 hidden sm:block">02</span>
         </div>
 
         <div class="group py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-white/[0.02] px-4 rounded-lg">
-          <div class="sm:w-1/3">
-            <h4 class="font-headline font-bold text-lg text-white uppercase group-hover:text-white transition-colors">{{ t.web_dev.cap3_title }}</h4>
+          <div class="sm:w-1/3 shrink-0">
+            <h4 class="font-headline font-semibold text-lg text-white group-hover:text-white transition-colors">{{ t.web_dev.cap3_title }}</h4>
           </div>
-          <p class="sm:w-1/2 font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+          <p class="sm:flex-1 font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed">
             {{ t.web_dev.cap3_desc }}
           </p>
-          <span class="font-mono text-xs text-white/30 text-right sm:w-1/6 hidden sm:block">03</span>
         </div>
 
         <div class="group py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:bg-white/[0.02] px-4 rounded-lg">
-          <div class="sm:w-1/3">
-            <h4 class="font-headline font-bold text-lg text-white uppercase group-hover:text-white transition-colors">{{ t.web_dev.cap4_title }}</h4>
+          <div class="sm:w-1/3 shrink-0">
+            <h4 class="font-headline font-semibold text-lg text-white group-hover:text-white transition-colors">{{ t.web_dev.cap4_title }}</h4>
           </div>
-          <p class="sm:w-1/2 font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+          <p class="sm:flex-1 font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed">
             {{ t.web_dev.cap4_desc }}
           </p>
-          <span class="font-mono text-xs text-white/30 text-right sm:w-1/6 hidden sm:block">04</span>
         </div>
 
       </div>
@@ -396,7 +316,7 @@
         {% for skill in skills_dev %}
         <span class="badge-mono bg-surface-container-high border-white/10 text-white flex items-center gap-2">
           {{ skill.name }}
-          <span class="text-[10px] text-on-surface-variant opacity-60">({{ skill.level }})</span>
+          <span class="text-[10px] text-on-surface-variant opacity-60">({{ skill.detail }})</span>
         </span>
         {% endfor %}
       </div>
@@ -408,12 +328,11 @@
 <!-- ============================== AI CREATIVE & COMMERCIALS STUDIO ============================== -->
 <section id="ai-creative" class="scroll-mt-24 py-20 lg:py-32 border-t border-white/5 bg-background relative overflow-hidden">
   <div class="max-w-content mx-auto px-5 sm:px-8 lg:px-12">
-    
+
     <!-- Header -->
     <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-16 border-b border-white/5" data-reveal>
       <div class="max-w-3xl">
-        <span class="kicker mb-3">{{ t.ai_studio.kicker }}</span>
-        <h2 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight uppercase text-white leading-[0.95]">
+        <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight text-white leading-[1.05]">
           {{ t.ai_studio.title_1 }}<br/>
           <span class="text-on-surface-variant/60">{{ t.ai_studio.title_2 }}</span>
         </h2>
@@ -428,120 +347,70 @@
       </div>
     </div>
 
-    <!-- Flagship Reel Video Player Card -->
-    <div class="bento-card mt-12 p-1 bg-surface-container-lowest group cursor-pointer" data-reveal data-stagger="1">
-      <div class="relative w-full aspect-[16/9] lg:aspect-[21/9] rounded-lg overflow-hidden bg-surface-container-highest isolate shadow-2xl">
-        <div class="bento-bg-img absolute inset-0 bg-cover bg-center opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
-             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBOaxiEv0rAIdolxIAfDirRqt5BQy5WP46r8a1JnfE0VWOjfBCH7v1K7h5oK4CZYJ62MygmdKTv4UOF_4vfOhwvPP9bLtWe34PNyyZCyHa273pXkwSCWbrTru4fJioj9XHExkYKTYvWvpRyDwlHeiad1crxREEpEkBcQqN1u4vqChQRMWDPRUpjt-qpcRVcnVQ4tj1vHZd5JkD_bjoGG6WnxvdT2HknSTTA5CdcPQvDU3kGclU6o78Leg');">
-        </div>
+    {% if flagship_video %}
+    <!-- Flagship Real Production : Featured AI Video Project -->
+    <button type="button" class="bento-card mt-12 p-1 bg-surface-container-lowest group cursor-pointer w-full text-left"
+            data-reveal data-stagger="1"
+            hx-get="{% url 'projects:detail' flagship_video.pk %}" hx-target="#modal-root" hx-swap="innerHTML"
+            aria-label="{{ t.modal.watch_video|default:'Voir le spot' }} : {{ flagship_video.title }}">
+      <div class="relative w-full aspect-[16/9] lg:aspect-[21/9] rounded-lg overflow-hidden bg-surface-container-highest isolate shadow-md">
+        {% if flagship_video.thumbnail %}
+        <img src="{{ flagship_video.thumbnail.url }}" alt="{{ flagship_video.title }}"
+             class="bento-bg-img absolute inset-0 h-full w-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+             loading="lazy" width="1600" height="686">
+        {% endif %}
         <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent"></div>
-        
+
         <!-- Play Button Overlay -->
         <div class="absolute inset-0 flex items-center justify-center">
-          <a href="#projets" class="play-btn-pulse w-20 sm:w-24 h-20 sm:h-24 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-background shadow-2xl group-hover:scale-110 group-hover:bg-white transition-all duration-300">
+          <span class="play-btn-pulse w-20 sm:w-24 h-20 sm:h-24 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-background shadow-lg group-hover:scale-105 group-hover:bg-white transition-all duration-300">
             <span class="material-symbols-outlined text-[40px] ml-1 text-background">play_arrow</span>
-          </a>
+          </span>
         </div>
 
         <!-- Video Bottom Metadata -->
         <div class="absolute bottom-0 left-0 p-6 sm:p-10 w-full flex items-end justify-between z-10">
           <div class="flex flex-col gap-1.5">
-            <span class="badge-mono bg-white/20 text-white backdrop-blur-md w-fit">{{ t.ai_studio.reel_tag }}</span>
-            <h3 class="font-headline font-extrabold text-xl sm:text-3xl text-white uppercase">{{ t.ai_studio.reel_title }}</h3>
+            <span class="badge-mono bg-white/20 text-white backdrop-blur-md w-fit">{{ flagship_video.sector }}</span>
+            <h3 class="font-headline font-semibold text-xl sm:text-3xl text-white">{{ flagship_video.title }}</h3>
           </div>
-          <span class="font-mono text-xs text-white/80 hidden sm:block">{{ t.ai_studio.reel_meta }}</span>
+          {% if flagship_video.stack %}
+          <span class="font-mono text-xs text-white/80 hidden sm:block">{{ flagship_video.stack|join:" · " }}</span>
+          {% endif %}
         </div>
       </div>
+    </button>
+    {% endif %}
+
+    {% if spotlight_videos %}
+    <!-- Real AI Production Spotlight Grid -->
+    <div class="grid grid-cols-1 {% if spotlight_videos|length > 1 %}md:grid-cols-2{% endif %} gap-6 lg:gap-8 mt-12" data-reveal data-stagger="2">
+      {% for video in spotlight_videos %}
+      <button type="button" class="bento-card p-6 sm:p-8 bg-surface-container flex flex-col justify-between min-h-[380px] group text-left w-full"
+              hx-get="{% url 'projects:detail' video.pk %}" hx-target="#modal-root" hx-swap="innerHTML"
+              aria-label="{{ t.modal.watch_video|default:'Voir le spot' }} : {{ video.title }}">
+        <div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden mb-6 bg-surface-container-high">
+          {% if video.thumbnail %}
+          <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}"
+               class="bento-bg-img absolute inset-0 h-full w-full object-cover opacity-85 group-hover:opacity-100 transition-all duration-700"
+               loading="lazy" width="800" height="500">
+          {% endif %}
+          <div class="absolute top-3 left-3">
+            <span class="badge-mono">{{ video.sector }}</span>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between gap-3">
+            <h4 class="font-headline font-semibold text-xl sm:text-2xl text-white">{{ video.title }}</h4>
+          </div>
+          <p class="font-sans text-xs sm:text-sm text-on-surface-variant mt-2 leading-relaxed line-clamp-3">
+            {{ video.description }}
+          </p>
+        </div>
+      </button>
+      {% endfor %}
     </div>
-
-    <!-- AI Commercials Concept Grid (4 Showcase Items) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mt-12" data-reveal data-stagger="2">
-      
-      <!-- Spot 1: PULPA -->
-      <div class="bento-card p-6 sm:p-8 bg-surface-container flex flex-col justify-between min-h-[380px] group">
-        <div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden mb-6 bg-surface-container-high">
-          <div class="bento-bg-img absolute inset-0 bg-cover bg-center opacity-85 group-hover:opacity-100 transition-all duration-700"
-               style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCPwO6ml4_AMM8GtjEke8d_OU5LXp_ef6tzBub-yhsKivcgTEBScVoBnZ5gMq3b0Zv1E_1yMH10ZmoAfSADwHjl3oTwOLgQ0XyiK7Vdl7mokPVJlW-sMRc_7zqtKj_Ky8gkSoOQiXl48t7aA7tTL-KMbVrxOI-5on7P_ZQ-i3KBVkx1A7sxd4VYGQ_UWqGzHTZHC5CB0V8ofoBLX6hyZIlLU4gCdUAksfzUQRsOOWgz4CDVoIGG9vkBNw');">
-          </div>
-          <div class="absolute top-3 left-3">
-            <span class="badge-mono">{{ t.ai_studio.spot1_badge }}</span>
-          </div>
-        </div>
-        <div>
-          <div class="flex items-center justify-between">
-            <h4 class="font-headline font-bold text-xl sm:text-2xl text-white uppercase">{{ t.ai_studio.spot1_title }}</h4>
-            <span class="font-mono text-xs text-on-surface-variant">{{ t.ai_studio.spot1_type }}</span>
-          </div>
-          <p class="font-sans text-xs sm:text-sm text-on-surface-variant mt-2 leading-relaxed">
-            {{ t.ai_studio.spot1_desc }}
-          </p>
-        </div>
-      </div>
-
-      <!-- Spot 2: N'TCHAN -->
-      <div class="bento-card p-6 sm:p-8 bg-surface-container flex flex-col justify-between min-h-[380px] group">
-        <div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden mb-6 bg-surface-container-high">
-          <div class="bento-bg-img absolute inset-0 bg-cover bg-center opacity-85 group-hover:opacity-100 transition-all duration-700"
-               style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDdyqrEbGnrDrY94oOS_yx80gftPMs-PlkyijZuPs2D3K4UIKtLnFIvvdCSuB821GJ8Jr9c4_436y7yRXgWstrDCstnwxos7Z67EXeuxcLJYdwcqtV9wPfszbhf1UNGj4u1DsQMIGFk79Yl4aniBf5wtgqfqH2fIKGQBlJSloDLC19aAi_Wl4-R_EwkDuE_k0np-zioHIX27KKH7pbo2m0sdt3j7MkLYmx44lsLwg51fHi-Ey18AsDmrw');">
-          </div>
-          <div class="absolute top-3 left-3">
-            <span class="badge-mono">{{ t.ai_studio.spot2_badge }}</span>
-          </div>
-        </div>
-        <div>
-          <div class="flex items-center justify-between">
-            <h4 class="font-headline font-bold text-xl sm:text-2xl text-white uppercase">{{ t.ai_studio.spot2_title }}</h4>
-            <span class="font-mono text-xs text-on-surface-variant">{{ t.ai_studio.spot2_type }}</span>
-          </div>
-          <p class="font-sans text-xs sm:text-sm text-on-surface-variant mt-2 leading-relaxed">
-            {{ t.ai_studio.spot2_desc }}
-          </p>
-        </div>
-      </div>
-
-      <!-- Spot 3: AREB -->
-      <div class="bento-card p-6 sm:p-8 bg-surface-container flex flex-col justify-between min-h-[380px] group">
-        <div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden mb-6 bg-surface-container-high">
-          <div class="bento-bg-img absolute inset-0 bg-cover bg-center opacity-85 group-hover:opacity-100 transition-all duration-700"
-               style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCdyoqksQoot6uHab0I8WpNmolDU7A12mJk3blypDapUlbumR7ZzvIZmUe6ILFb1e2NsCDZSSQpV4klaOTax1bh9Fj8JVd9AmARnQrMT6GhiceK7cS81UxmZdKy1enOHWCJLJZdfpi20_oiM8jcJ33vF4YrOg1ooJWuUY61hKVolE7VKh9zgUlhgActmV6r7_TiRFIEVUwPsJJt89o7RgK3hQpPHMMmc2CC8c_Vxp8Jp6aUmnNbF1Ko-w');">
-          </div>
-          <div class="absolute top-3 left-3">
-            <span class="badge-mono">{{ t.ai_studio.spot3_badge }}</span>
-          </div>
-        </div>
-        <div>
-          <div class="flex items-center justify-between">
-            <h4 class="font-headline font-bold text-xl sm:text-2xl text-white uppercase">{{ t.ai_studio.spot3_title }}</h4>
-            <span class="font-mono text-xs text-on-surface-variant">{{ t.ai_studio.spot3_type }}</span>
-          </div>
-          <p class="font-sans text-xs sm:text-sm text-on-surface-variant mt-2 leading-relaxed">
-            {{ t.ai_studio.spot3_desc }}
-          </p>
-        </div>
-      </div>
-
-      <!-- Spot 4: UrbanFlow X -->
-      <div class="bento-card p-6 sm:p-8 bg-surface-container flex flex-col justify-between min-h-[380px] group">
-        <div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden mb-6 bg-surface-container-high">
-          <div class="bento-bg-img absolute inset-0 bg-cover bg-center opacity-85 group-hover:opacity-100 transition-all duration-700"
-               style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA-cp56s9v0XoIssx9jUxx0iwzdiw0mlMDG_6aaQRwpHrfbMnV53Zskl-LOy4nFHu8lTR4agAA--RLl8slDQ02WokU5aQcI7oAYH7nLTY9oGwy3ioZgSUFyXyliiFgXXq45vmhJ0T4b9-4oeqtKrRiWi9wo2twnM2WjLB7135M1KrTwiNDQ9HC5A6KB98rgg-PbtcOLSNTbs0L51LUYk7cKvXgyYsej6rcSzRoRiEmfRVgKtbK-8bFezQ');">
-          </div>
-          <div class="absolute top-3 left-3">
-            <span class="badge-mono">{{ t.ai_studio.spot4_badge }}</span>
-          </div>
-        </div>
-        <div>
-          <div class="flex items-center justify-between">
-            <h4 class="font-headline font-bold text-xl sm:text-2xl text-white uppercase">{{ t.ai_studio.spot4_title }}</h4>
-            <span class="font-mono text-xs text-on-surface-variant">{{ t.ai_studio.spot4_type }}</span>
-          </div>
-          <p class="font-sans text-xs sm:text-sm text-on-surface-variant mt-2 leading-relaxed">
-            {{ t.ai_studio.spot4_desc }}
-          </p>
-        </div>
-      </div>
-
-    </div>
+    {% endif %}
 
     <!-- AI Video Tools Cloud -->
     <div class="mt-16 pt-8 border-t border-white/5" data-reveal>
@@ -550,7 +419,7 @@
         {% for skill in skills_video %}
         <span class="badge-mono bg-surface-container-high border-white/10 text-white flex items-center gap-2">
           {{ skill.name }}
-          <span class="text-[10px] text-on-surface-variant opacity-60">({{ skill.usage }})</span>
+          <span class="text-[10px] text-on-surface-variant opacity-60">({{ skill.detail }})</span>
         </span>
         {% endfor %}
       </div>
@@ -569,8 +438,7 @@
     <!-- Section Header Offset Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16" data-reveal>
       <div class="lg:col-span-5 flex flex-col gap-3">
-        <span class="kicker">{{ t.services.kicker }}</span>
-        <h2 class="font-display text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-white leading-[0.95]">
+        <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight text-white leading-[1.05]">
           {{ t.services.title_1 }}<br/>
           <span class="text-on-surface-variant/60">{{ t.services.title_2 }}</span>
         </h2>
@@ -595,7 +463,7 @@
                 <span class="material-symbols-outlined text-[28px] text-white">code_blocks</span>
                 <span class="font-mono text-xs uppercase tracking-widest text-on-surface-variant">{{ t.services.s1_badge }}</span>
               </div>
-              <h3 class="font-headline font-extrabold text-2xl sm:text-3xl text-white uppercase tracking-tight group-hover:text-white transition-colors">
+              <h3 class="font-headline font-semibold text-2xl sm:text-3xl text-white tracking-tight group-hover:text-white transition-colors">
                 {{ t.services.s1_title }}
               </h3>
               <p class="mt-4 font-sans text-sm sm:text-base text-on-surface-variant leading-relaxed max-w-xl">
@@ -604,7 +472,7 @@
             </div>
             
             <div class="mt-8 pt-8 border-t border-white/10">
-              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-3.5 gap-x-6 font-mono text-xs text-on-surface-variant uppercase">
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-3.5 gap-x-6 font-sans text-sm text-on-surface-variant">
                 {% for item in t.services.s1_items %}
                 <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-white rounded-full"></span> {{ item }}</li>
                 {% endfor %}
@@ -612,9 +480,9 @@
             </div>
           </div>
 
-          <!-- Visual Code Decor Side -->
+          <!-- Visual Code Decor Side — live typing animation -->
           <div class="lg:col-span-5 relative min-h-[220px] lg:min-h-full bg-surface-container-lowest/80 overflow-hidden flex items-center justify-center p-8 border-t lg:border-t-0 lg:border-l border-white/5">
-            <div class="font-mono text-[11px] text-white/40 leading-relaxed select-none w-full max-w-md">
+            <div id="code-typewriter" data-typewriter class="font-mono text-[11px] text-white/40 leading-relaxed select-none w-full max-w-md">
               <span class="text-white/20">// Django Service Architecture</span><br/>
               <span class="text-white/60">class</span> <span class="text-white">EnterpriseService</span>(models.Model):<br/>
               &nbsp;&nbsp;name = models.CharField(max_length=255)<br/>
@@ -628,65 +496,26 @@
         </div>
       </div>
 
-      <!-- Service Pillar 2: AI Visuals -->
-      <div class="bento-card group relative w-full bg-surface-container rounded-2xl overflow-hidden transition-all duration-500 hover:bg-surface-container-high border border-white/10 hover:border-white/25">
-        <div class="grid grid-cols-1 lg:grid-cols-12 h-full">
-          <!-- Visual Decor Side (Swapped for alternating rhythm) -->
-          <div class="lg:col-span-5 relative min-h-[220px] lg:min-h-full order-last lg:order-first bg-surface-container-lowest/80 overflow-hidden flex items-center justify-center p-8 border-b lg:border-b-0 lg:border-r border-white/5">
-            <div class="w-full flex items-center justify-center">
-              <div class="w-28 h-28 rounded-full border border-white/15 flex items-center justify-center relative">
-                <div class="absolute inset-0 rounded-full border border-white/30 animate-ping opacity-20"></div>
-                <span class="material-symbols-outlined text-[44px] text-white/80">auto_awesome</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Content Side -->
-          <div class="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between z-10 order-first lg:order-last">
-            <div>
-              <div class="flex items-center gap-3 text-white mb-4">
-                <span class="material-symbols-outlined text-[28px] text-white">magic_button</span>
-                <span class="font-mono text-xs uppercase tracking-widest text-on-surface-variant">{{ t.services.s2_badge }}</span>
-              </div>
-              <h3 class="font-headline font-extrabold text-2xl sm:text-3xl text-white uppercase tracking-tight group-hover:text-white transition-colors">
-                {{ t.services.s2_title }}
-              </h3>
-              <p class="mt-4 font-sans text-sm sm:text-base text-on-surface-variant leading-relaxed max-w-xl">
-                {{ t.services.s2_desc }}
-              </p>
-            </div>
-            
-            <div class="mt-8 pt-8 border-t border-white/10">
-              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-3.5 gap-x-6 font-mono text-xs text-on-surface-variant uppercase">
-                {% for item in t.services.s2_items %}
-                <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-white rounded-full"></span> {{ item }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Service Pillar 3: AI Video & Commercials -->
       <div class="bento-card group relative w-full bg-surface-container rounded-2xl overflow-hidden transition-all duration-500 hover:bg-surface-container-high border border-white/10 hover:border-white/25">
         <div class="grid grid-cols-1 lg:grid-cols-12 h-full">
           <!-- Content Side -->
-          <div class="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between z-10">
+          <div class="lg:col-span-7 lg:order-last p-8 sm:p-12 flex flex-col justify-between z-10">
             <div>
               <div class="flex items-center gap-3 text-white mb-4">
                 <span class="material-symbols-outlined text-[28px] text-white">movie</span>
                 <span class="font-mono text-xs uppercase tracking-widest text-on-surface-variant">{{ t.services.s3_badge }}</span>
               </div>
-              <h3 class="font-headline font-extrabold text-2xl sm:text-3xl text-white uppercase tracking-tight group-hover:text-white transition-colors">
+              <h3 class="font-headline font-semibold text-2xl sm:text-3xl text-white tracking-tight group-hover:text-white transition-colors">
                 {{ t.services.s3_title }}
               </h3>
               <p class="mt-4 font-sans text-sm sm:text-base text-on-surface-variant leading-relaxed max-w-xl">
                 {{ t.services.s3_desc }}
               </p>
             </div>
-            
+
             <div class="mt-8 pt-8 border-t border-white/10">
-              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-3.5 gap-x-6 font-mono text-xs text-on-surface-variant uppercase">
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-3.5 gap-x-6 font-sans text-sm text-on-surface-variant">
                 {% for item in t.services.s3_items %}
                 <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-white rounded-full"></span> {{ item }}</li>
                 {% endfor %}
@@ -694,22 +523,20 @@
             </div>
           </div>
 
-          <!-- Visual Timeline Decor Side -->
-          <div class="lg:col-span-5 relative min-h-[220px] lg:min-h-full bg-surface-container-lowest/80 overflow-hidden flex flex-col justify-between p-8 border-t lg:border-t-0 lg:border-l border-white/5">
-            <div class="flex justify-between font-mono text-[10px] text-on-surface-variant/60 border-b border-white/10 pb-2">
-              <span>TIMELINE_01</span>
-              <span>00:00:30:00 · 4K</span>
+          <!-- Visual Timeline Decor Side — real production sample, autoplay muted loop -->
+          <div class="lg:col-span-5 lg:order-first relative min-h-[320px] lg:min-h-full bg-black overflow-hidden border-t lg:border-t-0 lg:border-r border-white/5">
+            <video class="absolute inset-0 h-full w-full object-cover"
+                   src="{% static 'video/service_production_loop.mp4' %}"
+                   poster="{% static 'img/projects/service_production_poster.jpg' %}"
+                   autoplay muted loop playsinline preload="auto" aria-hidden="true">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"></div>
+            <div class="absolute top-4 left-4 right-4 flex justify-between font-mono text-[10px] text-white/70">
+              <span>PRODUCTION_LIVE</span>
+              <span>4K</span>
             </div>
-            <div class="flex items-center justify-center gap-1.5 py-6">
-              <div class="w-1.5 h-16 bg-white/40 rounded-full animate-pulse"></div>
-              <div class="w-1.5 h-10 bg-white/30 rounded-full"></div>
-              <div class="w-1.5 h-20 bg-white rounded-full"></div>
-              <div class="w-1.5 h-12 bg-white/50 rounded-full"></div>
-              <div class="w-1.5 h-8 bg-white/20 rounded-full"></div>
-              <div class="w-1.5 h-14 bg-white/60 rounded-full"></div>
-            </div>
-            <div class="flex justify-between font-mono text-[10px] text-on-surface-variant/60 border-t border-white/10 pt-2">
-              <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span> REC SYNTH</span>
+            <div class="absolute bottom-4 left-4 right-4 flex justify-between font-mono text-[10px] text-white/70">
+              <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500/70"></span> REC SYNTH</span>
               <span>60 FPS</span>
             </div>
           </div>
@@ -719,14 +546,14 @@
     </div>
 
     <!-- Signature Combo Package Box -->
-    <div class="bento-card mt-16 p-8 sm:p-12 bg-gradient-to-b from-surface-container-high to-surface-container border border-white/20 shadow-2xl" data-reveal>
+    <div class="bento-card mt-16 p-8 sm:p-12 bg-gradient-to-b from-surface-container-high to-surface-container border border-white/15 shadow-md" data-reveal>
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
         <div class="max-w-2xl">
           <div class="flex items-center gap-2 mb-3">
             <span class="badge-mono bg-white text-background font-bold">{{ t.services.combo_badge }}</span>
             <span class="font-mono text-xs text-on-surface-variant">{{ t.services.combo_sub }}</span>
           </div>
-          <h3 class="font-headline font-extrabold text-2xl sm:text-3xl text-white uppercase">
+          <h3 class="font-headline font-semibold text-2xl sm:text-3xl text-white">
             {{ t.services.combo_title }}
           </h3>
           <p class="mt-3 font-sans text-sm sm:text-base text-on-surface-variant leading-relaxed">
@@ -755,7 +582,7 @@
       
       <!-- Left Column: Portrait & Location Tag -->
       <div class="lg:col-span-5 relative" data-reveal>
-        <div class="w-full max-w-md mx-auto aspect-[3/4] relative overflow-hidden rounded-2xl border border-white/15 bg-surface-container shadow-2xl group">
+        <div class="w-full max-w-md mx-auto aspect-[3/4] relative overflow-hidden rounded-2xl border border-white/15 bg-surface-container shadow-md group">
           <picture class="absolute inset-0 block h-full w-full">
             <source srcset="{% static 'img/portrait.webp' %}" type="image/webp">
             <img src="{% static 'img/portrait.jpg' %}" alt="Azeez Ridwan — Développeur Python/Django et Créateur IA"
@@ -765,23 +592,22 @@
           <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-80"></div>
           <div class="absolute bottom-6 left-6 right-6 flex items-center justify-between z-10">
             <div>
-              <span class="badge-mono bg-background/80 backdrop-blur-md text-white">Azeez Ridwan</span>
+              <span class="badge-mono bg-background/80 backdrop-blur-md text-white">{{ site.name }}</span>
               <p class="font-mono text-xs text-on-surface-variant/80 mt-1.5">{{ t.hero.meta_location }}</p>
             </div>
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="w-2.5 h-2.5 rounded-full {% if site.available %}bg-emerald-400{% else %}bg-amber-400{% endif %} animate-ping"></span>
           </div>
         </div>
       </div>
 
       <!-- Right Column: Biography & Philosophy -->
       <div class="lg:col-span-7 flex flex-col justify-center gap-6" data-reveal data-stagger="1">
-        <span class="kicker">{{ t.about.kicker }}</span>
         
         <div>
-          <h2 class="font-display text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-white leading-[0.95]">
+          <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight text-white leading-[1.05]">
             {{ t.about.title }}
           </h2>
-          <h3 class="font-headline text-lg sm:text-xl font-bold uppercase tracking-wider text-on-surface-variant/70 mt-2">
+          <h3 class="font-headline text-lg sm:text-xl font-medium tracking-tight text-on-surface-variant/70 mt-2">
             {{ t.about.role }}
           </h3>
         </div>
@@ -798,15 +624,15 @@
         <!-- Mini-Metrics Stats -->
         <div class="grid grid-cols-3 gap-6 border-t border-white/10 pt-8 mt-4 max-w-lg">
           <div>
-            <span class="font-headline text-2xl sm:text-3xl font-extrabold text-white">{{ t.about.stat1_num }}</span>
+            <span class="font-headline text-2xl sm:text-3xl font-semibold text-white tabular-nums" data-counter>{{ t.about.stat1_num }}</span>
             <span class="block font-mono text-[11px] uppercase tracking-wider text-on-surface-variant mt-1">{{ t.about.stat1_lbl }}</span>
           </div>
           <div>
-            <span class="font-headline text-2xl sm:text-3xl font-extrabold text-white">{{ t.about.stat2_num }}</span>
+            <span class="font-headline text-2xl sm:text-3xl font-semibold text-white tabular-nums" data-counter>{{ t.about.stat2_num }}</span>
             <span class="block font-mono text-[11px] uppercase tracking-wider text-on-surface-variant mt-1">{{ t.about.stat2_lbl }}</span>
           </div>
           <div>
-            <span class="font-headline text-2xl sm:text-3xl font-extrabold text-white">{{ t.about.stat3_num }}</span>
+            <span class="font-headline text-2xl sm:text-3xl font-semibold text-white tabular-nums" data-counter>{{ t.about.stat3_num }}</span>
             <span class="block font-mono text-[11px] uppercase tracking-wider text-on-surface-variant mt-1">{{ t.about.stat3_lbl }}</span>
           </div>
         </div>
@@ -825,8 +651,7 @@
     <!-- ============================== TÉMOIGNAGES (SOCIAL PROOF) ============================== -->
     <div id="temoignages" class="mt-24 pt-16 border-t border-white/5">
       <div class="max-w-2xl mb-12" data-reveal>
-        <span class="kicker mb-3">{{ t.about.testimonials_kicker }}</span>
-        <h2 class="font-display text-2xl sm:text-4xl font-extrabold uppercase tracking-tight text-white">
+        <h2 class="font-display text-2xl sm:text-4xl font-semibold tracking-tight text-white">
           {{ t.about.testimonials_title }}
         </h2>
       </div>
@@ -872,10 +697,9 @@
       
       <!-- Left Column: Direct Channels & Studio Location -->
       <div class="lg:col-span-5 flex flex-col gap-6" data-reveal>
-        <span class="kicker">{{ t.contact.kicker }}</span>
         
         <div>
-          <h2 class="font-display text-3xl sm:text-5xl font-extrabold uppercase tracking-tight text-white leading-[0.95]">
+          <h2 class="font-display text-3xl sm:text-5xl font-semibold tracking-tight text-white leading-[1.05]">
             {{ t.contact.title_1 }}<br/>
             <span class="text-on-surface-variant/60">{{ t.contact.title_2 }}</span>
           </h2>
@@ -972,7 +796,7 @@
 
       <!-- Right Column: Interactive HTMX Contact Form -->
       <div class="lg:col-span-7" data-reveal data-stagger="1">
-        <div class="bento-card bg-surface-container p-7 sm:p-10 border border-white/15 rounded-2xl shadow-2xl">
+        <div class="bento-card bg-surface-container p-7 sm:p-10 border border-white/15 rounded-2xl shadow-md">
           {% include 'components/contact_form.html' %}
         </div>
       </div>

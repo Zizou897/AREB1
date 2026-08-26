@@ -2,21 +2,40 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from contact.forms import ContactForm
-from projects.models import AI_TOOLS, Project
+from projects.models import Project
 from testimonials.models import Testimonial
 
-from .data import SKILLS_DEV, SKILLS_VIDEO
+from .models import Skill
 
 
 def home(request):
+    all_projects = Project.objects.all()
+    video_projects = list(all_projects.filter(category='video'))
+    video_projects.sort(key=lambda p: not p.featured)
+    skills_video = list(Skill.objects.filter(category='video'))
+
+    MIN_TEASER_COUNT = 2
+    featured_projects = list(all_projects.filter(featured=True))
+    if len(featured_projects) < MIN_TEASER_COUNT:
+        seen_ids = {p.pk for p in featured_projects}
+        for project in all_projects:
+            if len(featured_projects) >= max(MIN_TEASER_COUNT, 3):
+                break
+            if project.pk not in seen_ids:
+                featured_projects.append(project)
+                seen_ids.add(project.pk)
+
     context = {
-        'projects': Project.objects.all(),
         'active_category': 'all',
-        'ai_tools': AI_TOOLS,
-        'skills_dev': SKILLS_DEV,
-        'skills_video': SKILLS_VIDEO,
+        'featured_projects': featured_projects,
+        'ai_tools': [skill.name for skill in skills_video],
+        'skills_dev': Skill.objects.filter(category='dev'),
+        'skills_video': skills_video,
         'testimonials': Testimonial.objects.all(),
         'contact_form': ContactForm(),
+        'video_projects': video_projects,
+        'flagship_video': video_projects[0] if video_projects else None,
+        'spotlight_videos': video_projects[1:] if len(video_projects) > 1 else [],
     }
     return render(request, 'pages/home.html', context)
 

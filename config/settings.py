@@ -104,6 +104,16 @@ MEDIA_ROOT = BASE_DIR / 'media_cdn'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Cache base de données : partagé entre tous les workers Gunicorn (contrairement au
+# cache mémoire local), utilisé notamment pour le rate limiting du formulaire de contact.
+# Table créée via `python manage.py createcachetable`.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'django_cache_table',
+    }
+}
+
 # Formulaire de contact : les messages sont toujours stockés en base ;
 # l'email n'est envoyé que si un SMTP est configuré.
 EMAIL_HOST = config('EMAIL_HOST', default='')

@@ -2,23 +2,23 @@
 <header id="navbar" class="fixed top-0 inset-x-0 z-50 bg-background/80 backdrop-blur-xl border-b border-white/5 transition-all duration-300">
   <div class="h-20 max-w-content mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between">
     <!-- Brand / Logo -->
-    <a href="#" class="flex items-center gap-3.5 group" aria-label="Azeez Ridwan — Accueil">
+    <a href="{% url 'core:home' %}" class="flex items-center gap-3.5 group" aria-label="Azeez Ridwan — Accueil">
       <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/15 bg-surface-container flex items-center justify-center group-hover:border-white/40 transition-all duration-200 shadow-sm">
         <img src="{% static 'img/logo.png' %}" alt="Logo AR" class="w-full h-full object-cover" width="40" height="40">
       </div>
-      <span class="font-headline font-bold text-base lg:text-lg tracking-tight uppercase text-white">
+      <span class="font-headline font-semibold text-base lg:text-lg tracking-tight text-white">
         Azeez Ridwan
       </span>
     </a>
 
     <!-- Desktop Navigation -->
     <nav class="hidden md:flex items-center gap-7 lg:gap-8" aria-label="Navigation principale">
-      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#accueil">{{ t.nav.work }}</a>
-      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#projets">{{ t.nav.projects }}</a>
-      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#competences">{{ t.nav.web_ai }}</a>
-      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#services">{{ t.nav.services }}</a>
-      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#about">{{ t.nav.about }}</a>
-      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="#contact">{{ t.nav.contact }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="{% url 'core:home' %}#accueil">{{ t.nav.work }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors{% if request.resolver_match.app_name == 'projects' %} active{% endif %}" href="{% url 'projects:list' %}">{{ t.nav.projects }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="{% url 'core:home' %}#competences">{{ t.nav.web_ai }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="{% url 'core:home' %}#services">{{ t.nav.services }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="{% url 'core:home' %}#about">{{ t.nav.about }}</a>
+      <a class="nav-link font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors" href="{% url 'core:home' %}#contact">{{ t.nav.contact }}</a>
     </nav>
 
     <!-- Header Actions & Controls -->
@@ -62,7 +62,7 @@
         </a>
       </div>
 
-      <a href="#contact" class="hidden sm:inline-flex btn-studio-primary text-xs py-2.5 px-5">
+      <a href="{% url 'core:home' %}#contact" class="hidden sm:inline-flex btn-studio-primary text-xs py-2.5 px-5" data-magnetic="0.25">
         {{ t.nav.start_project }}
         <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
       </a>
@@ -78,12 +78,12 @@
   <!-- Mobile Drawer Menu -->
   <div id="nav-mobile" class="hidden border-b border-white/10 bg-surface-container-lowest/95 px-5 pb-6 pt-4 backdrop-blur-2xl md:hidden">
     <nav class="flex flex-col space-y-3 font-mono text-sm uppercase tracking-wider">
-      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#accueil">{{ t.nav.work }}</a>
-      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#projets">{{ t.nav.projects }}</a>
-      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#competences">{{ t.nav.web_ai }}</a>
-      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#services">{{ t.nav.services }}</a>
-      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#about">{{ t.nav.about }}</a>
-      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="#contact">{{ t.nav.contact }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="{% url 'core:home' %}#accueil">{{ t.nav.work }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="{% url 'projects:list' %}">{{ t.nav.projects }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="{% url 'core:home' %}#competences">{{ t.nav.web_ai }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="{% url 'core:home' %}#services">{{ t.nav.services }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="{% url 'core:home' %}#about">{{ t.nav.about }}</a>
+      <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="{% url 'core:home' %}#contact">{{ t.nav.contact }}</a>
       
       <div class="pt-3 pb-2 border-t border-white/10 flex items-center justify-between">
         <button id="theme-toggle-mobile" type="button" aria-label="Basculer le thème"
@@ -95,7 +95,7 @@
       </div>
 
       <div class="pt-2">
-        <a href="#contact" class="btn-studio-primary w-full justify-center text-xs py-3">
+        <a href="{% url 'core:home' %}#contact" class="btn-studio-primary w-full justify-center text-xs py-3">
           {{ t.nav.start_project }}
           <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
         </a>

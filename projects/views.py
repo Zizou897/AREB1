@@ -6,15 +6,22 @@ VALID_CATEGORIES = {'web', 'video'}
 
 
 def project_list(request):
-    """Grille filtrée, renvoyée en partial pour les onglets HTMX."""
+    """Grille filtrée. Renvoyée en partial pour les onglets HTMX,
+    ou en page complète pour un accès direct à /projects/."""
     category = request.GET.get('category', 'all')
     projects = Project.objects.all()
     if category in VALID_CATEGORIES:
         projects = projects.filter(category=category)
-    return render(request, 'components/projects_grid.html', {
+    context = {
         'projects': projects,
         'active_category': category if category in VALID_CATEGORIES else 'all',
-    })
+    }
+    if request.htmx:
+        return render(request, 'components/projects_grid.html', context)
+
+    context['total_web'] = Project.objects.filter(category='web').count()
+    context['total_video'] = Project.objects.filter(category='video').count()
+    return render(request, 'pages/projects.html', context)
 
 
 def project_detail(request, pk):

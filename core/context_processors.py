@@ -1,4 +1,4 @@
-from django.conf import settings
+from .models import SiteSettings
 from .translations import get_translation
 
 
@@ -22,7 +22,7 @@ def site_info(request):
     t = get_translation(current_lang)
 
     return {
-        'site': settings.SITE_INFO,
+        'site': SiteSettings.load(),
         'current_lang': current_lang,
         'other_lang': other_lang,
         't': t,

@@ -10,10 +10,15 @@
 
     <!-- Media Header (Video embed or Full width thumbnail) -->
     {% if project.category == 'video' and project.video_url %}
-    <div class="bg-black aspect-video w-full">
+    <div class="relative bg-black aspect-video w-full">
       <iframe src="{{ project.video_embed_url }}" title="Vidéo : {{ project.title }}"
               class="h-full w-full border-b border-white/10" allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
               allowfullscreen loading="lazy"></iframe>
+      <a href="{{ project.video_url }}" target="_blank" rel="noopener"
+         class="absolute bottom-4 right-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-background/85 backdrop-blur-md border border-white/15 px-3.5 py-2 font-mono text-[11px] uppercase tracking-wider text-white hover:bg-background transition-colors">
+        {{ t.modal.watch_youtube }}
+        <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+      </a>
     </div>
     {% elif project.thumbnail %}
     <div class="relative w-full aspect-[21/9] sm:aspect-[16/8] overflow-hidden bg-surface-container-lowest">
@@ -32,7 +37,7 @@
         <span class="font-mono text-xs text-on-surface-variant/70">{{ t.modal.case_study }}</span>
       </div>
 
-      <h2 id="modal-title" class="font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-white mt-2">
+      <h2 id="modal-title" class="font-display text-2xl sm:text-4xl font-semibold tracking-tight text-white mt-2">
         {{ project.title }}
       </h2>
 

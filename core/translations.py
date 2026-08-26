@@ -8,7 +8,7 @@ TRANSLATIONS = {
         'meta_title': 'Azeez Ridwan — Développeur Python/Django & Créateur IA · Abidjan',
         'meta_description': "Portfolio d'Azeez Ridwan — Développeur Python/Django (5+ ans d'expérience) et créateur de médias synthétiques & vidéos IA. Projets, architecture et contact.",
         'nav': {
-            'work': 'Réalisations',
+            'work': 'Accueil',
             'projects': 'Projets',
             'web_ai': 'Web & IA',
             'services': 'Services',
@@ -46,9 +46,12 @@ TRANSLATIONS = {
         ],
         'projects': {
             'kicker': 'Projets Sélectionnés',
+            'page_title': 'Tous les projets',
             'title_1': 'Des idées. Des interfaces.',
             'title_2': 'Des résultats.',
             'subtitle': 'Une sélection rigoureuse de projets techniques et créatifs : applications web full-stack sur mesure, plateformes métier et productions visuelles IA conçues avec précision.',
+            'teaser_subtitle': 'Un aperçu des projets les plus représentatifs — applications web sur mesure et productions visuelles IA.',
+            'view_all': 'Voir tous les projets',
             'tab_all': 'Tous les projets',
             'tab_web': 'Dév Web',
             'tab_video': 'Vidéo IA',
@@ -68,6 +71,7 @@ TRANSLATIONS = {
         'modal': {
             'case_study': 'Étude de cas',
             'watch_video': 'Voir le spot',
+            'watch_youtube': 'Regarder sur YouTube',
             'problem': 'Problématique',
             'solution': 'Solution Apportée',
             'result': 'Résultat Mesurable',
@@ -151,7 +155,7 @@ TRANSLATIONS = {
                 'Concept Art & Moodboards',
                 'Contenus Réseaux Sociaux & Ads',
             ],
-            's3_badge': '03 / Motion',
+            's3_badge': '02 / Motion',
             's3_title': 'Production Vidéo & Publicités IA',
             's3_desc': 'Production de vidéos publicitaires cinématiques entièrement générées par IA : storyboard, génération vidéo haute cohérence temporelle, voix-off neuronales naturelles, sound design et montage dynamique prêt pour la diffusion.',
             's3_items': [
@@ -227,7 +231,7 @@ TRANSLATIONS = {
         'meta_title': 'Azeez Ridwan — Python/Django Developer & AI Creative · Abidjan',
         'meta_description': 'Portfolio of Azeez Ridwan — Full-Stack Python/Django developer (5+ years exp.) and synthetic media / AI commercials creator. Projects, architecture & contact.',
         'nav': {
-            'work': 'Work',
+            'work': 'Home',
             'projects': 'Projects',
             'web_ai': 'Web & AI',
             'services': 'Services',
@@ -265,9 +269,12 @@ TRANSLATIONS = {
         ],
         'projects': {
             'kicker': 'Selected Projects',
+            'page_title': 'All Projects',
             'title_1': 'Ideas. Interfaces.',
             'title_2': 'Measurable Results.',
             'subtitle': 'A curated selection of technical and creative commissions: bespoke full-stack applications, business platforms, and synthetic AI media crafted with precision.',
+            'teaser_subtitle': 'A look at a few representative projects — bespoke web applications and AI-generated visual productions.',
+            'view_all': 'View all projects',
             'tab_all': 'All Works',
             'tab_web': 'Web Dev',
             'tab_video': 'AI Video',
@@ -286,6 +293,7 @@ TRANSLATIONS = {
         'modal': {
             'case_study': 'Case Study',
             'watch_video': 'Watch Commercial',
+            'watch_youtube': 'Watch on YouTube',
             'problem': 'Challenge / Problem',
             'solution': 'Engineered Solution',
             'result': 'Measurable Outcome',
@@ -369,7 +377,7 @@ TRANSLATIONS = {
                 'Concept Art & Visual Moodboards',
                 'Social Campaign & Ad Creatives',
             ],
-            's3_badge': '03 / Motion',
+            's3_badge': '02 / Motion',
             's3_title': 'AI Video & Commercial Production',
             's3_desc': 'Pioneering cinematic motion through generative AI: storyboarding, temporal coherence, natural neural voiceovers, sound design, and broadcast-ready dynamic editing.',
             's3_items': [

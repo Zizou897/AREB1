@@ -1,10 +1,5 @@
 from django.db import models
 
-AI_TOOLS = [
-    'Runway ML', 'Kling AI', 'ElevenLabs', 'Sora',
-    'Pika Labs', 'Adobe Firefly', 'CapCut AI',
-]
-
 
 class Project(models.Model):
     CATEGORY_CHOICES = [
@@ -48,6 +43,9 @@ class Project(models.Model):
             return f'https://www.youtube-nocookie.com/embed/{video_id}?autoplay=1&rel=0'
         if 'youtu.be/' in url:
             video_id = url.split('youtu.be/')[-1].split('?')[0]
+            return f'https://www.youtube-nocookie.com/embed/{video_id}?autoplay=1&rel=0'
+        if '/shorts/' in url:
+            video_id = url.split('/shorts/')[-1].split('?')[0]
             return f'https://www.youtube-nocookie.com/embed/{video_id}?autoplay=1&rel=0'
         if 'vimeo.com/' in url and '/video/' not in url:
             video_id = url.rstrip('/').split('/')[-1]

@@ -37,8 +37,8 @@
   
   --card-bg: #1c1b1b;
   --card-border: rgba(255, 255, 255, 0.08);
-  --card-border-hover: rgba(255, 255, 255, 0.22);
-  --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+  --card-border-hover: rgba(255, 255, 255, 0.18);
+  --card-shadow: 0 12px 24px -14px rgba(0, 0, 0, 0.45);
   
   --nav-bg: rgba(19, 19, 19, 0.85);
   --modal-bg: rgba(10, 10, 10, 0.85);
@@ -122,23 +122,7 @@ h1, h2, h3, h4 {
   letter-spacing: -0.02em;
 }
 
-/* ---------- Monospace Kickers & Badges ---------- */
-.kicker {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--on-surface-variant);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.kicker::before {
-  content: "//";
-  color: var(--primary);
-  opacity: 0.7;
-}
-
+/* ---------- Monospace Badges ---------- */
 .badge-mono {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.6875rem;
@@ -234,7 +218,22 @@ html.light .badge-mono {
   transition: transform 700ms var(--ease-out-expo), filter 500ms;
 }
 .bento-card:hover .bento-bg-img {
-  transform: scale(1.05);
+  transform: scale(1.025);
+}
+
+/* Curseur clignotant — animation de saisie de code */
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-left: 1px;
+  background: var(--cyan);
+  vertical-align: -0.1em;
+  animation: cursor-blink 900ms step-end infinite;
+}
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* Pulse play button */

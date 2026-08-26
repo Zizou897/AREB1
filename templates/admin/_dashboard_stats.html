@@ -1,0 +1,64 @@
+<style>
+  .dash-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 0 0 24px; }
+  .dash-card { background: var(--body-bg); border: 1px solid var(--hairline-color); border-radius: 6px; padding: 16px 18px; }
+  .dash-card .dash-value { font-size: 28px; font-weight: 600; line-height: 1.1; color: var(--body-fg); }
+  .dash-card .dash-value a { color: inherit; text-decoration: none; }
+  .dash-card .dash-value.alert { color: var(--error-fg, #ba2121); }
+  .dash-card .dash-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--body-quiet-color); margin-top: 4px; }
+  .dash-panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 0 0 28px; }
+  .dash-panel { background: var(--body-bg); border: 1px solid var(--hairline-color); border-radius: 6px; padding: 14px 18px; }
+  .dash-panel h3 { margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--body-quiet-color); }
+  .dash-panel ul { list-style: none; margin: 0; padding: 0; }
+  .dash-panel li { padding: 7px 0; border-top: 1px solid var(--hairline-color); font-size: 13px; }
+  .dash-panel li:first-child { border-top: none; }
+  .dash-panel li a { color: var(--link-fg); }
+  .dash-panel .empty { color: var(--body-quiet-color); font-style: italic; }
+</style>
+
+<div class="dash-stats">
+  <div class="dash-card">
+    <div class="dash-value {% if unread_messages %}alert{% endif %}">
+      <a href="{% url 'admin:contact_contactmessage_changelist' %}?handled__exact=0">{{ unread_messages }}</a>
+    </div>
+    <div class="dash-label">Messages non traités</div>
+  </div>
+  <div class="dash-card">
+    <div class="dash-value"><a href="{% url 'admin:projects_project_changelist' %}">{{ total_projects }}</a></div>
+    <div class="dash-label">Projets publiés</div>
+  </div>
+  <div class="dash-card">
+    <div class="dash-value"><a href="{% url 'admin:testimonials_testimonial_changelist' %}">{{ total_testimonials }}</a></div>
+    <div class="dash-label">Témoignages</div>
+  </div>
+  <div class="dash-card">
+    <div class="dash-value"><a href="{% url 'admin:core_sitesettings_changelist' %}">⚙</a></div>
+    <div class="dash-label">Réglages du site</div>
+  </div>
+</div>
+
+<div class="dash-panels">
+  <div class="dash-panel">
+    <h3>Derniers messages non traités</h3>
+    {% if recent_messages %}
+    <ul>
+      {% for msg in recent_messages %}
+      <li><a href="{% url 'admin:contact_contactmessage_change' msg.pk %}">{{ msg.full_name }}</a> — {{ msg.created_at|date:"d/m/Y" }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty">Rien en attente — tout est traité.</p>
+    {% endif %}
+  </div>
+  <div class="dash-panel">
+    <h3>Derniers projets</h3>
+    {% if recent_projects %}
+    <ul>
+      {% for project in recent_projects %}
+      <li><a href="{% url 'admin:projects_project_change' project.pk %}">{{ project.title }}</a> — {{ project.get_category_display }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="empty">Aucun projet pour le moment.</p>
+    {% endif %}
+  </div>
+</div>

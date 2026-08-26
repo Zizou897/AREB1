@@ -19,6 +19,9 @@ pip install -r requirements.txt
 echo "🗄️ Application des migrations Django..."
 python manage.py migrate --no-input
 
+echo "⏱️ Vérification de la table de cache (rate limiting)..."
+python manage.py createcachetable
+
 echo "🎨 Collecte des fichiers statiques..."
 python manage.py collectstatic --no-input
 
