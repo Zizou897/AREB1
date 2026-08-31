@@ -1,0 +1,89 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}{% if object %}Modifier le témoignage{% else %}Nouveau Témoignage{% endif %} — Studio{% endblock %}
+{% block page_title %}{% if object %}Modifier le témoignage{% else %}Nouveau Témoignage Client{% endif %}{% endblock %}
+{% block page_subtitle %}
+<p class="font-mono text-xs text-on-surface-variant mt-0.5">
+  Valorisez l'expérience client et vos résultats sur votre site
+</p>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="max-w-3xl">
+  <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-6 sm:p-8 shadow-sm">
+    <form method="post" enctype="multipart/form-data" class="flex flex-col gap-5">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-mono">
+        {{ form.non_field_errors }}
+      </div>
+      {% endif %}
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+            Nom du client / auteur <span class="text-rose-400">*</span>
+          </label>
+          {{ form.author_name }}
+          {% if form.author_name.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.author_name.errors.0 }}</span>{% endif %}
+        </div>
+
+        <div>
+          <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+            Poste / Entreprise <span class="text-rose-400">*</span>
+          </label>
+          {{ form.author_title }}
+          {% if form.author_title.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.author_title.errors.0 }}</span>{% endif %}
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+            Projet lié (optionnel)
+          </label>
+          {{ form.project }}
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+            Photo / Avatar du client
+          </label>
+          {{ form.avatar }}
+          {% if object.avatar %}
+          <div class="mt-2 flex items-center gap-3">
+            <img src="{{ object.avatar.url }}" alt="" class="w-10 h-10 rounded-full object-cover border border-white/10">
+            <span class="text-xs font-mono text-on-surface-variant">Avatar actuel</span>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+            Contenu du témoignage <span class="text-rose-400">*</span>
+          </label>
+          {{ form.content }}
+          {% if form.content.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.content.errors.0 }}</span>{% endif %}
+        </div>
+
+        <div class="md:col-span-2 flex items-center pt-2">
+          <label class="flex items-center gap-3 cursor-pointer select-none">
+            {{ form.featured }}
+            <span class="font-medium text-white text-xs">Mettre en avant sur la page d'accueil</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-5 border-t border-white/10 mt-3">
+        <a href="{% url 'dashboard:testimonial_list' %}" class="btn-studio-secondary text-xs py-3 px-5">
+          Annuler
+        </a>
+        <button type="submit" class="btn-studio-primary text-xs py-3 px-6">
+          <span class="material-symbols-outlined text-[16px]">save</span>
+          {% if object %}Mettre à jour{% else %}Ajouter le témoignage{% endif %}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}

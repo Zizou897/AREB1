@@ -1,0 +1,219 @@
+{% extends 'dashboard/_document.html' %}
+{% load static dashboard_extras %}
+
+{% block body %}
+<div class="lg:flex lg:h-screen bg-background overflow-hidden">
+
+  <!-- Mobile Top Bar -->
+  <div class="lg:hidden flex items-center justify-between px-5 py-4 border-b border-white/10 bg-surface-container-lowest sticky top-0 z-30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg overflow-hidden border border-white/15 bg-surface-container flex items-center justify-center shrink-0">
+        <img src="{% static 'img/logo.png' %}" alt="Logo" class="w-full h-full object-cover">
+      </div>
+      <div>
+        <span class="font-headline font-semibold text-sm text-white">Studio</span>
+        <span class="block font-mono text-[9px] uppercase tracking-widest text-cyan">Azeez Ridwan</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      {% unread_message_count as unread %}
+      {% if unread %}
+      <a href="{% url 'dashboard:message_list' %}" class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">
+        {{ unread }} new
+      </a>
+      {% endif %}
+      <button type="button" id="mobile-menu-btn" class="p-2 rounded-lg text-on-surface-variant hover:text-white hover:bg-white/5" aria-label="Menu">
+        <span class="material-symbols-outlined text-[22px]">menu</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation Drawer Backdrop -->
+  <div id="mobile-drawer-backdrop" class="fixed inset-0 bg-black/70 z-40 hidden lg:hidden backdrop-blur-sm transition-opacity"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar-container" class="fixed inset-y-0 left-0 z-50 w-72 lg:w-64 -translate-x-full lg:translate-x-0 lg:static lg:shrink-0 lg:h-screen border-r border-white/10 bg-surface-container-lowest flex flex-col transition-transform duration-300 ease-in-out">
+    
+    <!-- Sidebar Header / Brand -->
+    <div class="flex items-center justify-between px-5 py-5 border-b border-white/10">
+      <a href="{% url 'dashboard:home' %}" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-xl overflow-hidden border border-white/15 bg-surface-container flex items-center justify-center shrink-0 group-hover:border-cyan/50 transition-colors shadow-sm">
+          <img src="{% static 'img/logo.png' %}" alt="Logo" class="w-full h-full object-cover">
+        </div>
+        <div class="flex flex-col leading-tight min-w-0">
+          <span class="font-headline font-semibold text-sm text-white flex items-center gap-1.5">
+            Studio
+            <span class="w-2 h-2 rounded-full bg-cyan animate-pulse"></span>
+          </span>
+          <span class="font-mono text-[10px] uppercase tracking-widest text-on-surface-variant">Azeez Ridwan</span>
+        </div>
+      </a>
+      <button type="button" id="close-mobile-menu" class="lg:hidden p-1.5 text-on-surface-variant hover:text-white rounded-lg hover:bg-white/5">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <!-- Quick Stats Bar inside Sidebar -->
+    {% unread_message_count as unread %}
+    <div class="px-4 py-3 border-b border-white/5 bg-surface-container-low/40 text-center">
+      <div class="p-2 rounded-lg bg-surface-container-lowest/80 border border-white/5">
+        <span class="font-mono text-[10px] uppercase tracking-wider text-on-surface-variant block">Nouveaux messages</span>
+        <span class="font-headline text-base font-bold {% if unread %}text-rose-400 animate-pulse{% else %}text-white{% endif %}">{{ unread }}</span>
+      </div>
+    </div>
+
+    <!-- Main Navigation Links -->
+    <nav class="flex flex-col gap-1.5 px-3 py-4 flex-1 overflow-y-auto">
+      {% url 'dashboard:home' as url_home %}
+      {% url 'dashboard:message_list' as url_messages %}
+      {% url 'dashboard:project_list' as url_projects %}
+      {% url 'dashboard:testimonial_list' as url_testimonials %}
+      {% url 'dashboard:skill_list' as url_skills %}
+      {% url 'dashboard:settings' as url_settings %}
+
+      <a href="{{ url_home }}" class="dash-nav-link {% if request.path == url_home %}dash-nav-link--active{% endif %}">
+        <span class="material-symbols-outlined text-[19px]">dashboard</span>
+        <span>Tableau de bord</span>
+      </a>
+
+      <a href="{{ url_messages }}" class="dash-nav-link {% if '/dashboard/messages' in request.path %}dash-nav-link--active{% endif %}">
+        <span class="material-symbols-outlined text-[19px]">mail</span>
+        <span class="flex-1">Messages</span>
+        {% if unread %}
+        <span class="badge-mono bg-rose-500/20 text-rose-300 border-rose-500/40 text-[10px] px-1.5 py-0.5">
+          {{ unread }}
+        </span>
+        {% endif %}
+      </a>
+
+      <div class="px-3 pt-4 pb-1 font-mono text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-semibold">
+        Portfolio & Contenu
+      </div>
+
+      <a href="{{ url_projects }}" class="dash-nav-link {% if '/dashboard/projets' in request.path %}dash-nav-link--active{% endif %}">
+        <span class="material-symbols-outlined text-[19px]">folder_special</span>
+        <span>Projets Réalisés</span>
+      </a>
+
+      <a href="{{ url_testimonials }}" class="dash-nav-link {% if '/dashboard/temoignages' in request.path %}dash-nav-link--active{% endif %}">
+        <span class="material-symbols-outlined text-[19px]">reviews</span>
+        <span>Avis & Témoignages</span>
+      </a>
+
+      <a href="{{ url_skills }}" class="dash-nav-link {% if '/dashboard/competences' in request.path %}dash-nav-link--active{% endif %}">
+        <span class="material-symbols-outlined text-[19px]">bolt</span>
+        <span>Compétences & Stack</span>
+      </a>
+
+      <div class="px-3 pt-4 pb-1 font-mono text-[10px] uppercase tracking-widest text-on-surface-variant/60 font-semibold">
+        Configuration
+      </div>
+
+      <a href="{{ url_settings }}" class="dash-nav-link {% if '/dashboard/reglages' in request.path %}dash-nav-link--active{% endif %}">
+        <span class="material-symbols-outlined text-[19px]">tune</span>
+        <span>Réglages Studio</span>
+      </a>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="flex flex-col gap-1.5 px-3 py-4 border-t border-white/10 bg-surface-container-lowest">
+      <a href="/" target="_blank" class="dash-nav-link hover:text-cyan">
+        <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+        <span>Voir le site en direct</span>
+      </a>
+      <form method="post" action="{% url 'dashboard:logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="dash-nav-link w-full text-left text-on-surface-variant hover:text-rose-400">
+          <span class="material-symbols-outlined text-[18px]">logout</span>
+          <span>Déconnexion</span>
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <div class="flex-1 min-w-0 lg:h-screen lg:overflow-y-auto flex flex-col">
+    
+    <!-- Top App Bar -->
+    <header class="sticky top-0 z-20 bg-background/90 backdrop-blur-xl border-b border-white/10 px-5 sm:px-8 py-3.5 flex items-center justify-between gap-4">
+      <div class="min-w-0">
+        <div class="flex items-center gap-2">
+          <h1 class="font-headline font-semibold text-lg sm:text-xl text-white truncate">
+            {% block page_title %}Studio{% endblock %}
+          </h1>
+        </div>
+        {% block page_subtitle %}{% endblock %}
+      </div>
+
+      <!-- Header Actions: Quick Availability Toggle + CTAs -->
+      <div class="flex items-center gap-3 shrink-0">
+        
+        <!-- Live Availability Pill / Quick Toggle -->
+        <form method="post" action="{% url 'dashboard:toggle_availability' %}" class="inline">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <button type="submit" class="group flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-mono transition-all hover:scale-[1.02] active:scale-[0.98] {% if site.available %}border-emerald-500/40 bg-emerald-500/10 text-emerald-300 hover:border-emerald-500/70{% else %}border-amber-500/40 bg-amber-500/10 text-amber-300 hover:border-amber-500/70{% endif %}" title="Cliquer pour basculer le statut public">
+            <span class="w-2 h-2 rounded-full {% if site.available %}bg-emerald-400 animate-pulse{% else %}bg-amber-400{% endif %}"></span>
+            <span class="hidden sm:inline">{% if site.available %}Disponible pour projets{% else %}En mission / Occupé{% endif %}</span>
+            <span class="material-symbols-outlined text-[14px] text-on-surface-variant group-hover:text-white">sync</span>
+          </button>
+        </form>
+
+        {% block page_actions %}
+        <div class="hidden sm:flex items-center gap-2">
+          <a href="{% url 'dashboard:project_create' %}" class="btn-studio-primary text-xs py-2 px-3.5 flex items-center gap-1.5" title="Créer un projet">
+            <span class="material-symbols-outlined text-[16px]">add</span>
+            <span>+ Projet</span>
+          </a>
+        </div>
+        {% endblock %}
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 px-5 sm:px-8 py-6 sm:py-8">
+      {% if messages %}
+      <div class="flex flex-col gap-3 mb-6">
+        {% for message in messages %}
+        <div class="rounded-xl border px-4 py-3 text-sm font-sans flex items-center justify-between gap-3 shadow-sm {% if message.tags == 'success' %}border-emerald-500/30 bg-emerald-500/10 text-emerald-200{% elif message.tags == 'error' %}border-rose-500/30 bg-rose-500/10 text-rose-200{% else %}border-white/15 bg-surface-container text-on-surface-variant{% endif %}" role="status">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[18px] {% if message.tags == 'success' %}text-emerald-400{% elif message.tags == 'error' %}text-rose-400{% else %}text-cyan{% endif %}">
+              {% if message.tags == 'success' %}check_circle{% elif message.tags == 'error' %}error{% else %}info{% endif %}
+            </span>
+            <span>{{ message }}</span>
+          </div>
+          <button type="button" onclick="this.parentElement.remove()" class="text-on-surface-variant hover:text-white">
+            <span class="material-symbols-outlined text-[16px]">close</span>
+          </button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% block dashboard_content %}{% endblock %}
+    </main>
+
+  </div>
+</div>
+
+<script>
+  // Mobile drawer interaction
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const closeBtn = document.getElementById('close-mobile-menu');
+  const drawer = document.getElementById('sidebar-container');
+  const backdrop = document.getElementById('mobile-drawer-backdrop');
+
+  if (menuBtn && drawer && backdrop) {
+    menuBtn.addEventListener('click', () => {
+      drawer.classList.remove('-translate-x-full');
+      backdrop.classList.remove('hidden');
+    });
+    const closeDrawer = () => {
+      drawer.classList.add('-translate-x-full');
+      backdrop.classList.add('hidden');
+    };
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+  }
+</script>
+{% endblock %}

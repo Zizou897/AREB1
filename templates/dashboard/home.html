@@ -1,0 +1,70 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Tableau de bord — Studio{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
+{% block page_subtitle %}<p class="font-mono text-xs text-on-surface-variant mt-0.5">Vue d'ensemble de ton portfolio</p>{% endblock %}
+
+{% block dashboard_content %}
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  <a href="{% url 'dashboard:message_list' %}" class="bento-card bg-surface-container border border-white/10 rounded-2xl p-5 hover:border-white/25 transition-colors">
+    <div class="font-headline text-3xl font-semibold {% if unread_messages %}text-rose-300{% else %}text-white{% endif %}">{{ unread_messages }}</div>
+    <div class="font-mono text-[11px] uppercase tracking-wider text-on-surface-variant mt-1">Messages non traités</div>
+  </a>
+  <a href="{% url 'dashboard:project_list' %}" class="bento-card bg-surface-container border border-white/10 rounded-2xl p-5 hover:border-white/25 transition-colors">
+    <div class="font-headline text-3xl font-semibold text-white">{{ total_projects }}</div>
+    <div class="font-mono text-[11px] uppercase tracking-wider text-on-surface-variant mt-1">Projets publiés</div>
+  </a>
+  <a href="{% url 'dashboard:testimonial_list' %}" class="bento-card bg-surface-container border border-white/10 rounded-2xl p-5 hover:border-white/25 transition-colors">
+    <div class="font-headline text-3xl font-semibold text-white">{{ total_testimonials }}</div>
+    <div class="font-mono text-[11px] uppercase tracking-wider text-on-surface-variant mt-1">Témoignages</div>
+  </a>
+  <a href="{% url 'dashboard:skill_list' %}" class="bento-card bg-surface-container border border-white/10 rounded-2xl p-5 hover:border-white/25 transition-colors">
+    <div class="font-headline text-3xl font-semibold text-white">{{ total_skills }}</div>
+    <div class="font-mono text-[11px] uppercase tracking-wider text-on-surface-variant mt-1">Compétences & outils</div>
+  </a>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-mono text-xs uppercase tracking-widest text-on-surface-variant">Derniers messages</h3>
+      <a href="{% url 'dashboard:message_list' %}" class="font-mono text-xs text-cyan hover:underline">Tout voir</a>
+    </div>
+    {% if recent_messages %}
+    <ul class="flex flex-col divide-y divide-white/5">
+      {% for msg in recent_messages %}
+      <li class="py-3 flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-sm text-white truncate">{{ msg.full_name }}</p>
+          <p class="text-xs text-on-surface-variant truncate">{{ msg.email }}</p>
+        </div>
+        <span class="badge-mono {% if msg.handled %}bg-emerald-500/10 text-emerald-300 border-emerald-500/20{% else %}bg-rose-500/10 text-rose-300 border-rose-500/20{% endif %} shrink-0">
+          {% if msg.handled %}Traité{% else %}Nouveau{% endif %}
+        </span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-sm text-on-surface-variant">Aucun message pour le moment.</p>
+    {% endif %}
+  </div>
+
+  <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-mono text-xs uppercase tracking-widest text-on-surface-variant">Derniers projets</h3>
+      <a href="{% url 'dashboard:project_create' %}" class="font-mono text-xs text-cyan hover:underline">+ Nouveau</a>
+    </div>
+    {% if recent_projects %}
+    <ul class="flex flex-col divide-y divide-white/5">
+      {% for project in recent_projects %}
+      <li class="py-3 flex items-center justify-between gap-3">
+        <p class="text-sm text-white truncate">{{ project.title }}</p>
+        <span class="badge-mono bg-surface-container-high shrink-0">{{ project.get_category_display }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-sm text-on-surface-variant">Aucun projet pour le moment.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

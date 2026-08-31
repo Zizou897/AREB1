@@ -395,6 +395,76 @@ html.light .btn-studio-primary * {
   color: #ffffff !important;
 }
 
+/* ---------- Dashboard (Studio) : navigation latérale ---------- */
+.dash-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 0.65rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  color: var(--on-surface-variant);
+  transition: background-color 150ms, color 150ms;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+.dash-nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--on-surface);
+}
+.dash-nav-link--active {
+  background-color: var(--surface-container-high);
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* ---------- Dashboard : tables de gestion ---------- */
+.dash-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.dash-table th {
+  text-align: left;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--on-surface-variant);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.dash-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--on-surface);
+  vertical-align: middle;
+}
+.dash-table tr:last-child td { border-bottom: none; }
+.dash-table tr:hover td { background-color: rgba(255, 255, 255, 0.02); }
+
+/* ---------- CRM Kanban & Badges ---------- */
+.kanban-cards-container::-webkit-scrollbar {
+  width: 4px;
+}
+.kanban-cards-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+.kanban-cards-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.kanban-card {
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+}
+.kanban-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.5);
+}
+
 /* ---------- Reduced Motion Support ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -404,6 +474,8 @@ html.light .btn-studio-primary * {
   .bento-card:hover .bento-bg-img { transform: none; }
   .modal-backdrop, .modal-panel { animation: none; }
   #projects-grid.htmx-settling { animation: none; }
+  .kanban-card { transform: none !important; }
 }
+
 
 

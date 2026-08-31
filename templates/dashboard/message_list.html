@@ -1,0 +1,60 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Messages — Studio{% endblock %}
+{% block page_title %}Messages de contact{% endblock %}
+{% block page_subtitle %}<p class="font-mono text-xs text-on-surface-variant mt-0.5">Les visiteurs qui t'ont contacté via le formulaire du site</p>{% endblock %}
+{% block page_actions %}{% endblock %}
+
+{% block dashboard_content %}
+<div class="bento-card bg-surface-container border border-white/10 rounded-2xl overflow-hidden overflow-x-auto">
+  <table class="dash-table">
+    <thead>
+      <tr>
+        <th>Statut</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Message</th>
+        <th>Reçu le</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for msg in contact_messages %}
+      <tr>
+        <td>
+          <span class="badge-mono {% if msg.handled %}bg-emerald-500/10 text-emerald-300 border-emerald-500/20{% else %}bg-rose-500/10 text-rose-300 border-rose-500/20{% endif %}">
+            {% if msg.handled %}Traité{% else %}Nouveau{% endif %}
+          </span>
+        </td>
+        <td class="font-medium">{{ msg.full_name }}</td>
+        <td><a href="mailto:{{ msg.email }}" class="text-cyan hover:underline">{{ msg.email }}</a></td>
+        <td class="text-on-surface-variant max-w-xs truncate" title="{{ msg.message }}">{{ msg.message }}</td>
+        <td class="font-mono text-xs text-on-surface-variant whitespace-nowrap">{{ msg.created_at|date:'d/m/Y H:i' }}</td>
+        <td>
+          <div class="flex items-center justify-end gap-3">
+            <form method="post" action="{% url 'dashboard:message_toggle' msg.pk %}">
+              {% csrf_token %}
+              <button type="submit" class="text-on-surface-variant hover:text-white transition-colors" title="Basculer le statut">
+                <span class="material-symbols-outlined text-[18px]">{% if msg.handled %}undo{% else %}task_alt{% endif %}</span>
+              </button>
+            </form>
+            <a href="{% url 'dashboard:message_delete' msg.pk %}" class="text-on-surface-variant hover:text-rose-400 transition-colors" aria-label="Supprimer">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+            </a>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6" class="text-center text-on-surface-variant py-10">Aucun message pour le moment.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if is_paginated %}
+<div class="flex items-center justify-center gap-2 mt-6 font-mono text-xs">
+  {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}" class="btn-studio-secondary py-2 px-4">Précédent</a>{% endif %}
+  <span class="text-on-surface-variant">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}" class="btn-studio-secondary py-2 px-4">Suivant</a>{% endif %}
+</div>
+{% endif %}
+{% endblock %}

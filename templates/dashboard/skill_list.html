@@ -1,0 +1,90 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Compétences & Stack — Studio{% endblock %}
+{% block page_title %}Compétences & Outils Maîtrisés{% endblock %}
+{% block page_subtitle %}
+<p class="font-mono text-xs text-on-surface-variant mt-0.5">
+  Technologies et outils IA affichés dans la section Compétences
+</p>
+{% endblock %}
+
+{% block page_actions %}
+<div class="flex items-center gap-2">
+  <a href="{% url 'dashboard:skill_create' %}" class="btn-studio-primary text-xs py-2.5 px-4 flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-[16px]">add</span>
+    <span>Nouvelle compétence</span>
+  </a>
+</div>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  
+  <!-- Column 1: Dev Web -->
+  <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-6">
+    <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-cyan text-[20px]">code</span>
+        <h3 class="font-headline font-semibold text-base text-white">Développement Web & APIs</h3>
+      </div>
+      <span class="badge-mono text-xs text-cyan">{{ dev_skills.count }} outils</span>
+    </div>
+
+    <div class="flex flex-col gap-2.5">
+      {% for skill in dev_skills %}
+      <div class="p-3.5 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-between gap-3 group hover:border-white/15 transition-all">
+        <div class="min-w-0">
+          <h4 class="font-medium text-white text-sm truncate">{{ skill.name }}</h4>
+          <p class="font-mono text-xs text-on-surface-variant mt-0.5">{{ skill.detail }}</p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="font-mono text-[10px] text-on-surface-variant/60">#{{ skill.order }}</span>
+          <a href="{% url 'dashboard:skill_update' skill.pk %}" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-white/10 text-on-surface-variant hover:text-white transition-colors" title="Modifier">
+            <span class="material-symbols-outlined text-[15px]">edit</span>
+          </a>
+          <a href="{% url 'dashboard:skill_delete' skill.pk %}" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-rose-500/20 text-on-surface-variant hover:text-rose-400 transition-colors" title="Supprimer">
+            <span class="material-symbols-outlined text-[15px]">delete</span>
+          </a>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-center text-xs text-on-surface-variant font-mono py-8">Aucune compétence web ajoutée.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Column 2: IA Créative & Vidéo -->
+  <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-6">
+    <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-violet text-[20px]">smart_toy</span>
+        <h3 class="font-headline font-semibold text-base text-white">IA Créative & Vidéo Publicitaire</h3>
+      </div>
+      <span class="badge-mono text-xs text-violet">{{ video_skills.count }} outils</span>
+    </div>
+
+    <div class="flex flex-col gap-2.5">
+      {% for skill in video_skills %}
+      <div class="p-3.5 rounded-xl bg-surface-container-low border border-white/5 flex items-center justify-between gap-3 group hover:border-white/15 transition-all">
+        <div class="min-w-0">
+          <h4 class="font-medium text-white text-sm truncate">{{ skill.name }}</h4>
+          <p class="font-mono text-xs text-on-surface-variant mt-0.5">{{ skill.detail }}</p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="font-mono text-[10px] text-on-surface-variant/60">#{{ skill.order }}</span>
+          <a href="{% url 'dashboard:skill_update' skill.pk %}" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-white/10 text-on-surface-variant hover:text-white transition-colors" title="Modifier">
+            <span class="material-symbols-outlined text-[15px]">edit</span>
+          </a>
+          <a href="{% url 'dashboard:skill_delete' skill.pk %}" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-rose-500/20 text-on-surface-variant hover:text-rose-400 transition-colors" title="Supprimer">
+            <span class="material-symbols-outlined text-[15px]">delete</span>
+          </a>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-center text-xs text-on-surface-variant font-mono py-8">Aucune compétence IA ajoutée.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

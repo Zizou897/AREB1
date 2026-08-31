@@ -1,0 +1,175 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}{% if object %}Modifier {{ object.title }}{% else %}Nouveau Projet{% endif %} — Studio{% endblock %}
+{% block page_title %}{% if object %}Modifier : {{ object.title }}{% else %}Nouveau Projet Portfolio{% endif %}{% endblock %}
+{% block page_subtitle %}
+<p class="font-mono text-xs text-on-surface-variant mt-0.5">
+  Étude de cas détaillée : Problème, Solution, Résultat mesurable & Stack
+</p>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="max-w-4xl">
+  <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-6 sm:p-8 shadow-sm">
+    <form method="post" enctype="multipart/form-data" class="flex flex-col gap-6">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-mono">
+        {{ form.non_field_errors }}
+      </div>
+      {% endif %}
+
+      <!-- Section: Généralités -->
+      <div class="border-b border-white/10 pb-5">
+        <h3 class="font-headline font-semibold text-sm text-white uppercase tracking-wider mb-4">Informations Générales</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          
+          <div class="md:col-span-2">
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Titre du projet <span class="text-rose-400">*</span>
+            </label>
+            {{ form.title }}
+            {% if form.title.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.title.errors.0 }}</span>{% endif %}
+          </div>
+
+          <div>
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Catégorie <span class="text-rose-400">*</span>
+            </label>
+            {{ form.category }}
+            {% if form.category.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.category.errors.0 }}</span>{% endif %}
+          </div>
+
+          <div>
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Secteur / Client
+            </label>
+            {{ form.sector }}
+            {% if form.sector.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.sector.errors.0 }}</span>{% endif %}
+          </div>
+
+          <div class="flex items-center pt-6">
+            <label class="flex items-center gap-3 cursor-pointer select-none">
+              {{ form.featured }}
+              <span class="font-medium text-white text-xs">Mettre en avant sur la page d'accueil (Hero / Bento)</span>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Section: Médias & Liens -->
+      <div class="border-b border-white/10 pb-5">
+        <h3 class="font-headline font-semibold text-sm text-white uppercase tracking-wider mb-4">Médias & Liens Live</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          
+          <div class="md:col-span-2">
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Miniature / Image de couverture <span class="text-rose-400">*</span>
+            </label>
+            {{ form.thumbnail }}
+            {% if object.thumbnail %}
+            <div class="mt-2 flex items-center gap-3">
+              <img src="{{ object.thumbnail.url }}" alt="" class="w-20 h-12 object-cover rounded-lg border border-white/10">
+              <span class="text-xs font-mono text-on-surface-variant">Image actuelle</span>
+            </div>
+            {% endif %}
+            {% if form.thumbnail.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.thumbnail.errors.0 }}</span>{% endif %}
+          </div>
+
+          <div data-field-for-category="web">
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              URL du site live
+            </label>
+            {{ form.live_url }}
+          </div>
+
+          <div data-field-for-category="video">
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              URL Vidéo (YouTube ou Vimeo)
+            </label>
+            {{ form.video_url }}
+          </div>
+
+          <div class="md:col-span-2" data-field-for-category="web">
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Stack & Technologies
+            </label>
+            {{ form.stack }}
+            <p class="text-[11px] font-mono text-on-surface-variant mt-1">Ex: Django, HTMX, TailwindCSS, PostgreSQL, Runway Gen-3, ElevenLabs</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Section: Étude de Cas & Récit -->
+      <div>
+        <h3 class="font-headline font-semibold text-sm text-white uppercase tracking-wider mb-4">Étude de Cas (Récit Client)</h3>
+        <div class="flex flex-col gap-4">
+          
+          <div>
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Description générale <span class="text-rose-400">*</span>
+            </label>
+            {{ form.description }}
+            {% if form.description.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.description.errors.0 }}</span>{% endif %}
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block font-mono text-xs uppercase tracking-wider text-rose-300 mb-2">
+                1. Problème client
+              </label>
+              {{ form.problem }}
+            </div>
+            <div>
+              <label class="block font-mono text-xs uppercase tracking-wider text-cyan mb-2">
+                2. Solution apportée
+              </label>
+              {{ form.solution }}
+            </div>
+            <div>
+              <label class="block font-mono text-xs uppercase tracking-wider text-emerald-300 mb-2">
+                3. Résultat mesurable
+              </label>
+              {{ form.result }}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Submit & Actions -->
+      <div class="flex items-center justify-end gap-3 pt-5 border-t border-white/10">
+        <a href="{% url 'dashboard:project_list' %}" class="btn-studio-secondary text-xs py-3 px-5">
+          Annuler
+        </a>
+        <button type="submit" class="btn-studio-primary text-xs py-3 px-6">
+          <span class="material-symbols-outlined text-[16px]">save</span>
+          {% if object %}Enregistrer les modifications{% else %}Créer le projet{% endif %}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  var categorySelect = document.getElementById('{{ form.category.id_for_label }}');
+  var fields = document.querySelectorAll('[data-field-for-category]');
+  if (!categorySelect || !fields.length) return;
+
+  function syncFields() {
+    var current = categorySelect.value;
+    fields.forEach(function (field) {
+      field.classList.toggle('hidden', field.dataset.fieldForCategory !== current);
+    });
+  }
+
+  categorySelect.addEventListener('change', syncFields);
+  syncFields();
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Projets Portfolio — Studio{% endblock %}
+{% block page_title %}Projets Portfolio & Études de Cas{% endblock %}
+{% block page_subtitle %}
+<p class="font-mono text-xs text-on-surface-variant mt-0.5">
+  Gérez vos réalisations web, vidéos IA et cas clients mis en avant
+</p>
+{% endblock %}
+
+{% block page_actions %}
+<div class="flex items-center gap-2">
+  <a href="{% url 'dashboard:project_create' %}" class="btn-studio-primary text-xs py-2.5 px-4 flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-[16px]">add</span>
+    <span>Nouveau projet</span>
+  </a>
+</div>
+{% endblock %}
+
+{% block dashboard_content %}
+<!-- KPI Mini Bar -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6 font-mono text-xs">
+  <div class="p-3.5 rounded-xl bg-surface-container border border-white/10 flex items-center justify-between">
+    <span class="text-on-surface-variant">Total projets</span>
+    <span class="font-headline font-bold text-base text-white">{{ total_count }}</span>
+  </div>
+  <div class="p-3.5 rounded-xl bg-surface-container border border-white/10 flex items-center justify-between">
+    <span class="text-on-surface-variant">Développement Web</span>
+    <span class="font-headline font-bold text-base text-cyan">{{ web_count }}</span>
+  </div>
+  <div class="p-3.5 rounded-xl bg-surface-container border border-white/10 flex items-center justify-between">
+    <span class="text-on-surface-variant">Vidéos IA</span>
+    <span class="font-headline font-bold text-base text-violet">{{ video_count }}</span>
+  </div>
+  <div class="p-3.5 rounded-xl bg-surface-container border border-white/10 flex items-center justify-between">
+    <span class="text-on-surface-variant">Mis en avant</span>
+    <span class="font-headline font-bold text-base text-amber-300">{{ featured_count }}</span>
+  </div>
+</div>
+
+<!-- Projects Visual Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+  {% for project in projects %}
+  <div class="bento-card bg-surface-container border border-white/10 rounded-2xl overflow-hidden flex flex-col justify-between group hover:border-white/25 transition-all shadow-sm">
+    
+    <!-- Thumbnail & Badges -->
+    <div class="aspect-video w-full relative bg-surface-container-lowest overflow-hidden">
+      {% if project.thumbnail %}
+      <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+      {% else %}
+      <div class="w-full h-full flex items-center justify-center text-on-surface-variant/40">
+        <span class="material-symbols-outlined text-[36px]">image</span>
+      </div>
+      {% endif %}
+
+      <!-- Category Pill -->
+      <div class="absolute top-3 left-3 flex items-center gap-1.5">
+        <span class="badge-mono text-[9px] bg-black/70 backdrop-blur-md text-white border-white/20">
+          {{ project.get_category_display }}
+        </span>
+        {% if project.video_url %}
+        <span class="badge-mono text-[9px] bg-violet-500/80 backdrop-blur-md text-white border-violet-400/30 flex items-center gap-1">
+          <span class="material-symbols-outlined text-[11px]">play_circle</span> Vidéo
+        </span>
+        {% endif %}
+      </div>
+
+      <!-- Featured Star Toggle -->
+      <div class="absolute top-3 right-3">
+        <form method="post" action="{% url 'dashboard:project_toggle_featured' project.pk %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <button type="submit" class="p-1.5 rounded-lg backdrop-blur-md transition-transform hover:scale-110 {% if project.featured %}bg-amber-500/90 text-amber-950 shadow-md{% else %}bg-black/60 text-white/60 hover:text-white{% endif %}" title="{% if project.featured %}Retirer de la mise en avant{% else %}Mettre en avant{% endif %}">
+            <span class="material-symbols-outlined text-[16px] block">{% if project.featured %}star{% else %}star_outline{% endif %}</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Sector if exists -->
+      {% if project.sector %}
+      <div class="absolute bottom-2 left-3">
+        <span class="badge-mono text-[9px] bg-surface-container-high/90 backdrop-blur-md text-on-surface border-white/10">
+          {{ project.sector }}
+        </span>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Project Info -->
+    <div class="p-5 flex-1 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between gap-2 mb-1">
+          <h3 class="font-headline font-semibold text-base text-white group-hover:text-cyan transition-colors truncate">
+            {{ project.title }}
+          </h3>
+          <span class="font-mono text-[10px] text-on-surface-variant shrink-0">Ordre : #{{ project.order }}</span>
+        </div>
+
+        <p class="text-xs text-on-surface-variant line-clamp-2 mt-1 leading-relaxed">
+          {{ project.description }}
+        </p>
+
+        <!-- Tech Stack Tags -->
+        {% if project.stack %}
+        <div class="flex flex-wrap gap-1.5 mt-3">
+          {% for tech in project.stack|slice:":4" %}
+          <span class="badge-mono text-[9px] bg-surface-container-high text-on-surface">
+            {{ tech }}
+          </span>
+          {% endfor %}
+          {% if project.stack|length > 4 %}
+          <span class="badge-mono text-[9px] text-on-surface-variant">+{{ project.stack|length|add:"-4" }}</span>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Project Actions -->
+      <div class="flex items-center justify-between pt-4 mt-4 border-t border-white/5">
+        <div>
+          {% if project.live_url %}
+          <a href="{{ project.live_url }}" target="_blank" class="font-mono text-xs text-cyan hover:underline flex items-center gap-1">
+            <span>Visiter</span>
+            <span class="material-symbols-outlined text-[13px]">open_in_new</span>
+          </a>
+          {% endif %}
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="{% url 'dashboard:project_update' project.pk %}" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-white/10 text-on-surface-variant hover:text-white transition-colors" title="Modifier">
+            <span class="material-symbols-outlined text-[17px]">edit</span>
+          </a>
+          <a href="{% url 'dashboard:project_delete' project.pk %}" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-rose-500/20 text-on-surface-variant hover:text-rose-400 transition-colors" title="Supprimer">
+            <span class="material-symbols-outlined text-[17px]">delete</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  {% empty %}
+  <div class="col-span-full py-16 text-center text-on-surface-variant font-mono text-xs border border-dashed border-white/10 rounded-2xl">
+    Aucun projet enregistré. Cliquez sur « Nouveau projet » pour ajouter votre première étude de cas !
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if is_paginated %}
+<div class="flex items-center justify-center gap-2 mt-6 font-mono text-xs">
+  {% if page_obj.has_previous %}
+  <a href="?page={{ page_obj.previous_page_number }}" class="btn-studio-secondary py-2 px-4">Précédent</a>
+  {% endif %}
+  <span class="text-on-surface-variant">Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}
+  <a href="?page={{ page_obj.next_page_number }}" class="btn-studio-secondary py-2 px-4">Suivant</a>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

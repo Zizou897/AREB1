@@ -1,0 +1,28 @@
+{% for field in form %}
+{% if field.field.widget.input_type == 'checkbox' %}
+<div class="flex items-center gap-3">
+  {{ field }}
+  <label for="{{ field.id_for_label }}" class="text-sm text-on-surface-variant">{{ field.label }}</label>
+</div>
+{% else %}
+<div>
+  <label for="{{ field.id_for_label }}" class="mb-2 block font-mono text-xs uppercase tracking-wider text-on-surface-variant">
+    {{ field.label }}{% if field.field.required %} <span class="text-white">*</span>{% endif %}
+  </label>
+  {{ field }}
+  {% if field.help_text %}
+  <p class="mt-1.5 text-xs text-on-surface-variant/70">{{ field.help_text }}</p>
+  {% endif %}
+  {% if field.errors %}
+  <p class="mt-1.5 font-mono text-xs text-rose-400" role="alert">{{ field.errors|join:' ' }}</p>
+  {% endif %}
+  {% if field.name == 'thumbnail' or field.name == 'avatar' %}
+    {% with current=field.value %}
+    {% if current %}
+    <img src="{{ current.url }}" alt="" class="mt-3 h-16 rounded-lg border border-white/10 object-cover">
+    {% endif %}
+    {% endwith %}
+  {% endif %}
+</div>
+{% endif %}
+{% endfor %}

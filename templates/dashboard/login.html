@@ -1,0 +1,53 @@
+{% extends 'dashboard/_document.html' %}
+{% load static %}
+{% block title %}Connexion — Studio{% endblock %}
+
+{% block body %}
+<div class="min-h-screen flex items-center justify-center px-5 py-16">
+  <div class="w-full max-w-sm">
+    <div class="flex flex-col items-center gap-3 mb-8">
+      <div class="w-12 h-12 rounded-xl overflow-hidden border border-white/15 bg-surface-container flex items-center justify-center shadow-md">
+        <img src="{% static 'img/logo.png' %}" alt="Logo" class="w-full h-full object-cover" width="48" height="48">
+      </div>
+      <span class="font-headline font-semibold text-lg text-white">Studio</span>
+      <span class="font-mono text-[11px] uppercase tracking-widest text-on-surface-variant">Espace de gestion</span>
+    </div>
+
+    <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-7 sm:p-8">
+      {% if form.errors %}
+      <div class="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs text-rose-300 font-mono mb-5" role="alert">
+        Identifiants incorrects. Réessaie.
+      </div>
+      {% endif %}
+
+      <form method="post" class="flex flex-col gap-5">
+        {% csrf_token %}
+        <div>
+          <label for="id_username" class="mb-2 block font-mono text-xs uppercase tracking-wider text-on-surface-variant">
+            Identifiant
+          </label>
+          <input type="text" name="username" id="id_username" autofocus autocomplete="username" required
+                 class="w-full rounded-xl border border-line bg-surface-2 px-4 py-3 text-ink placeholder:text-ink-mute/70 focus:border-cyan focus:outline-none focus:ring-2 focus:ring-cyan/30 transition-colors min-h-[48px]">
+        </div>
+        <div>
+          <label for="id_password" class="mb-2 block font-mono text-xs uppercase tracking-wider text-on-surface-variant">
+            Mot de passe
+          </label>
+          <input type="password" name="password" id="id_password" autocomplete="current-password" required
+                 class="w-full rounded-xl border border-line bg-surface-2 px-4 py-3 text-ink placeholder:text-ink-mute/70 focus:border-cyan focus:outline-none focus:ring-2 focus:ring-cyan/30 transition-colors min-h-[48px]">
+        </div>
+        <input type="hidden" name="next" value="{{ next }}">
+        <button type="submit" class="btn-studio-primary mt-2 w-full py-4 text-xs">
+          Se connecter
+          <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+        </button>
+      </form>
+    </div>
+
+    <a href="/" class="mt-6 flex items-center justify-center gap-1.5 font-mono text-xs uppercase tracking-widest text-on-surface-variant hover:text-white transition-colors">
+      <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+      Retour au site
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Confirmer la suppression — Studio{% endblock %}
+{% block page_title %}Supprimer ?{% endblock %}
+
+{% block dashboard_content %}
+<div class="bento-card bg-surface-container border border-rose-500/20 rounded-2xl p-6 sm:p-8 max-w-lg">
+  <p class="text-sm text-on-surface-variant leading-relaxed">
+    Es-tu sûr de vouloir supprimer <span class="text-white font-medium">« {{ object }} »</span> ?
+    Cette action est définitive.
+  </p>
+  <form method="post" class="flex items-center gap-3 mt-6">
+    {% csrf_token %}
+    <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-md bg-rose-500 hover:bg-rose-600 text-white font-mono text-xs font-semibold uppercase tracking-wider px-6 py-3 transition-colors">
+      Oui, supprimer
+      <span class="material-symbols-outlined text-[16px]">delete</span>
+    </button>
+    <a href="{{ request.META.HTTP_REFERER|default:'/dashboard/' }}" class="btn-studio-secondary text-xs py-3 px-6">Annuler</a>
+  </form>
+</div>
+{% endblock %}

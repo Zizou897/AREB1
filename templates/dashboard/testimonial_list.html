@@ -1,0 +1,95 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Témoignages & Avis — Studio{% endblock %}
+{% block page_title %}Témoignages Clients & Recommandations{% endblock %}
+{% block page_subtitle %}
+<p class="font-mono text-xs text-on-surface-variant mt-0.5">
+  Preuve sociale et retours d'expérience affichés sur votre portfolio
+</p>
+{% endblock %}
+
+{% block page_actions %}
+<div class="flex items-center gap-2">
+  <a href="{% url 'dashboard:testimonial_create' %}" class="btn-studio-primary text-xs py-2.5 px-4 flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-[16px]">add</span>
+    <span>Nouveau témoignage</span>
+  </a>
+</div>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+  {% for t in testimonials %}
+  <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-6 flex flex-col justify-between group hover:border-white/25 transition-all shadow-sm">
+    
+    <!-- Top: Stars & Featured Star Toggle -->
+    <div>
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <!-- 5 Golden Stars -->
+        <div class="flex items-center gap-1 text-amber-300">
+          <span class="material-symbols-outlined text-[16px]">star</span>
+          <span class="material-symbols-outlined text-[16px]">star</span>
+          <span class="material-symbols-outlined text-[16px]">star</span>
+          <span class="material-symbols-outlined text-[16px]">star</span>
+          <span class="material-symbols-outlined text-[16px]">star</span>
+        </div>
+
+        <form method="post" action="{% url 'dashboard:testimonial_toggle_featured' t.pk %}">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <button type="submit" class="p-1 rounded-lg transition-transform hover:scale-110 {% if t.featured %}text-amber-300 bg-amber-500/10 border border-amber-500/30{% else %}text-on-surface-variant/40 hover:text-white{% endif %}" title="{% if t.featured %}Mis en avant sur le site{% else %}Cliquer pour mettre en avant{% endif %}">
+            <span class="material-symbols-outlined text-[18px] block">{% if t.featured %}star{% else %}star_outline{% endif %}</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Quote Content -->
+      <blockquote class="text-xs text-on-surface leading-relaxed italic mb-6">
+        « {{ t.content }} »
+      </blockquote>
+    </div>
+
+    <!-- Bottom: Author Info & Project Link -->
+    <div class="pt-4 border-t border-white/5">
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          {% if t.avatar %}
+          <img src="{{ t.avatar.url }}" alt="{{ t.author_name }}" class="w-9 h-9 rounded-full object-cover border border-white/15 shrink-0">
+          {% else %}
+          <div class="w-9 h-9 rounded-full bg-surface-container-high border border-white/15 flex items-center justify-center font-mono font-bold text-xs text-cyan shrink-0">
+            {{ t.initials }}
+          </div>
+          {% endif %}
+          <div class="min-w-0">
+            <h4 class="font-headline font-semibold text-xs text-white truncate">{{ t.author_name }}</h4>
+            <p class="text-[11px] text-on-surface-variant truncate">{{ t.author_title }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 shrink-0">
+          <a href="{% url 'dashboard:testimonial_update' t.pk %}" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-white/10 text-on-surface-variant hover:text-white transition-colors" title="Modifier">
+            <span class="material-symbols-outlined text-[16px]">edit</span>
+          </a>
+          <a href="{% url 'dashboard:testimonial_delete' t.pk %}" class="p-1.5 rounded-lg bg-surface-container-high hover:bg-rose-500/20 text-on-surface-variant hover:text-rose-400 transition-colors" title="Supprimer">
+            <span class="material-symbols-outlined text-[16px]">delete</span>
+          </a>
+        </div>
+      </div>
+
+      {% if t.project %}
+      <div class="mt-3">
+        <span class="badge-mono text-[9px] bg-surface-container-low text-cyan border-white/5 truncate block max-w-full">
+          Projet : {{ t.project.title }}
+        </span>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+  {% empty %}
+  <div class="col-span-full py-16 text-center text-on-surface-variant font-mono text-xs border border-dashed border-white/10 rounded-2xl">
+    Aucun témoignage client pour l'instant. Ajoutez les retours de vos clients satisfaits !
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

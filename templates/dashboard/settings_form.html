@@ -1,0 +1,151 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Réglages Studio — Studio{% endblock %}
+{% block page_title %}Réglages & Identité du Studio{% endblock %}
+{% block page_subtitle %}
+<p class="font-mono text-xs text-on-surface-variant mt-0.5">
+  Coordonnées, liens réseaux sociaux et disponibilité affichés sur le site
+</p>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  
+  <!-- Settings Form (2 Cols) -->
+  <div class="lg:col-span-2">
+    <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-6 sm:p-8 shadow-sm">
+      <form method="post" class="flex flex-col gap-5">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-mono">
+          {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Nom complet affiché <span class="text-rose-400">*</span>
+            </label>
+            {{ form.name }}
+          </div>
+
+          <div>
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Email de réception des messages <span class="text-rose-400">*</span>
+            </label>
+            {{ form.email }}
+          </div>
+
+          <div>
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Numéro WhatsApp (sans le '+')
+            </label>
+            {{ form.whatsapp }}
+            <p class="text-[11px] font-mono text-on-surface-variant mt-1">Ex. 2250700000000</p>
+          </div>
+
+          <div>
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Identifiant Telegram (sans le '@')
+            </label>
+            {{ form.telegram }}
+          </div>
+
+          <div>
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              URL Profil LinkedIn
+            </label>
+            {{ form.linkedin }}
+          </div>
+
+          <div>
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              URL Profil GitHub
+            </label>
+            {{ form.github }}
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+              Localisation géographique
+            </label>
+            {{ form.location }}
+          </div>
+
+          <div class="sm:col-span-2 p-4 rounded-xl bg-surface-container-low border border-white/10">
+            <label class="flex items-center gap-3 cursor-pointer select-none">
+              {{ form.available }}
+              <div>
+                <span class="font-medium text-white text-xs block">Disponible pour de nouveaux projets</span>
+                <span class="font-mono text-[11px] text-on-surface-variant block mt-0.5">
+                  Contrôle la pastille verte de disponibilité affichée sur la page d'accueil du site.
+                </span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-5 border-t border-white/10 mt-2">
+          <button type="submit" class="btn-studio-primary text-xs py-3 px-6">
+            <span class="material-symbols-outlined text-[16px]">save</span>
+            Enregistrer les réglages
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Live Preview / Branding Card -->
+  <div class="flex flex-col gap-4">
+    <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-6">
+      <h3 class="font-headline font-semibold text-sm text-white uppercase tracking-wider mb-4">Aperçu Public</h3>
+      
+      <div class="p-4 rounded-xl bg-surface-container-lowest border border-white/10 flex flex-col gap-4">
+        
+        <!-- Status Indicator Preview -->
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full {% if object.available %}bg-emerald-400 animate-pulse{% else %}bg-amber-400{% endif %}"></span>
+          <span class="font-mono text-xs text-white">
+            {% if object.available %}Disponible pour de nouveaux projets{% else %}Actuellement en mission{% endif %}
+          </span>
+        </div>
+
+        <!-- Location -->
+        <div class="flex items-center gap-2 text-xs text-on-surface-variant">
+          <span class="material-symbols-outlined text-[16px] text-cyan">location_on</span>
+          <span>{{ object.location }}</span>
+        </div>
+
+        <!-- Contact Links -->
+        <div class="pt-3 border-t border-white/5 flex flex-col gap-2 text-xs font-mono">
+          <div class="text-on-surface-variant">
+            Email : <span class="text-white">{{ object.email }}</span>
+          </div>
+          {% if object.whatsapp %}
+          <div class="text-on-surface-variant">
+            WhatsApp : <span class="text-emerald-400">+{{ object.whatsapp }}</span>
+          </div>
+          {% endif %}
+          {% if object.telegram %}
+          <div class="text-on-surface-variant">
+            Telegram : <span class="text-cyan">@{{ object.telegram }}</span>
+          </div>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <div class="mt-4 text-center">
+        <a href="/" target="_blank" class="inline-flex items-center gap-1 font-mono text-xs text-cyan hover:underline">
+          <span>Tester sur le site public</span>
+          <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

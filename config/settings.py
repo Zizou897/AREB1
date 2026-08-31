@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'projects',
     'testimonials',
     'contact',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -103,6 +104,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media_cdn'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'dashboard:login'
+LOGIN_REDIRECT_URL = 'dashboard:home'
+LOGOUT_REDIRECT_URL = 'dashboard:login'
 
 # Cache base de données : partagé entre tous les workers Gunicorn (contrairement au
 # cache mémoire local), utilisé notamment pour le rate limiting du formulaire de contact.

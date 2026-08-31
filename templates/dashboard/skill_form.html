@@ -1,0 +1,68 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}{% if object %}Modifier la compétence{% else %}Nouvelle Compétence{% endif %} — Studio{% endblock %}
+{% block page_title %}{% if object %}Modifier la compétence{% else %}Ajouter une Compétence / Outil{% endif %}{% endblock %}
+{% block page_subtitle %}
+<p class="font-mono text-xs text-on-surface-variant mt-0.5">
+  Stack technique ou outil d'IA générative
+</p>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="max-w-xl">
+  <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-6 sm:p-8 shadow-sm">
+    <form method="post" class="flex flex-col gap-5">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-mono">
+        {{ form.non_field_errors }}
+      </div>
+      {% endif %}
+
+      <div>
+        <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+          Nom de la compétence / de l'outil <span class="text-rose-400">*</span>
+        </label>
+        {{ form.name }}
+        {% if form.name.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.name.errors.0 }}</span>{% endif %}
+      </div>
+
+      <div>
+        <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+          Catégorie <span class="text-rose-400">*</span>
+        </label>
+        {{ form.category }}
+        {% if form.category.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.category.errors.0 }}</span>{% endif %}
+      </div>
+
+      <div>
+        <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+          Niveau / Usage spécifique <span class="text-rose-400">*</span>
+        </label>
+        {{ form.detail }}
+        <p class="text-[11px] font-mono text-on-surface-variant mt-1">Ex: "Expert", "Production 4K", "Fine-tuning", "Architecture modulaire"</p>
+        {% if form.detail.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.detail.errors.0 }}</span>{% endif %}
+      </div>
+
+      <div>
+        <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+          Ordre d'affichage
+        </label>
+        {{ form.order }}
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-5 border-t border-white/10 mt-2">
+        <a href="{% url 'dashboard:skill_list' %}" class="btn-studio-secondary text-xs py-3 px-5">
+          Annuler
+        </a>
+        <button type="submit" class="btn-studio-primary text-xs py-3 px-6">
+          <span class="material-symbols-outlined text-[16px]">save</span>
+          {% if object %}Mettre à jour{% else %}Ajouter la compétence{% endif %}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
