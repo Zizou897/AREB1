@@ -6,14 +6,15 @@ from contact.forms import ContactForm
 from projects.models import Project
 from testimonials.models import Testimonial
 
-from .models import Skill
+from .models import Skill, SiteSettings
 
 
 def home(request):
     all_projects = Project.objects.all()
-    video_projects = list(all_projects.filter(category='video'))
-    video_projects.sort(key=lambda p: not p.featured)
     skills_video = list(Skill.objects.filter(category='video'))
+
+    site = SiteSettings.load()
+    showcase_videos = [v for v in (site.showcase_video_1, site.showcase_video_2) if v]
 
     MIN_TEASER_COUNT = 2
     featured_projects = list(all_projects.filter(featured=True))
@@ -34,9 +35,8 @@ def home(request):
         'skills_video': skills_video,
         'testimonials': Testimonial.objects.all(),
         'contact_form': ContactForm(),
-        'video_projects': video_projects,
-        'flagship_video': video_projects[0] if video_projects else None,
-        'spotlight_videos': video_projects[1:] if len(video_projects) > 1 else [],
+        'flagship_video': showcase_videos[0] if showcase_videos else None,
+        'spotlight_videos': showcase_videos[1:],
     }
     return render(request, 'pages/home.html', context)
 

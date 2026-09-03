@@ -140,7 +140,10 @@ class SkillForm(forms.ModelForm):
 class SiteSettingsForm(forms.ModelForm):
     class Meta:
         model = SiteSettings
-        fields = ['name', 'email', 'whatsapp', 'telegram', 'linkedin', 'github', 'location', 'available']
+        fields = [
+            'name', 'email', 'whatsapp', 'telegram', 'linkedin', 'github', 'location', 'available',
+            'showcase_video_1', 'showcase_video_2',
+        ]
         widgets = {
             'name': forms.TextInput(attrs={'class': INPUT}),
             'email': forms.EmailInput(attrs={'class': INPUT}),
@@ -150,4 +153,14 @@ class SiteSettingsForm(forms.ModelForm):
             'github': forms.URLInput(attrs={'class': INPUT, 'placeholder': 'https://github.com/...'}),
             'location': forms.TextInput(attrs={'class': INPUT, 'placeholder': 'Abidjan, Côte d’Ivoire'}),
             'available': forms.CheckboxInput(attrs={'class': CHECKBOX}),
+            'showcase_video_1': forms.Select(attrs={'class': INPUT}),
+            'showcase_video_2': forms.Select(attrs={'class': INPUT}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        video_qs = Project.objects.filter(category='video').order_by('-created_at')
+        self.fields['showcase_video_1'].queryset = video_qs
+        self.fields['showcase_video_2'].queryset = video_qs
+        self.fields['showcase_video_1'].empty_label = 'Aucune'
+        self.fields['showcase_video_2'].empty_label = 'Aucune'

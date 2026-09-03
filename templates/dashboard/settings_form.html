@@ -85,6 +85,27 @@
               </div>
             </label>
           </div>
+
+          <div class="sm:col-span-2 p-4 rounded-xl bg-surface-container-low border border-white/10">
+            <span class="font-medium text-white text-xs block mb-1">Vidéos IA en avant (section « Réalité Cinématique »)</span>
+            <span class="font-mono text-[11px] text-on-surface-variant block mb-4">
+              Choisis exactement les 2 vidéos affichées dans cette section de l'accueil.
+            </span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+                  Vidéo #1 (mise en avant)
+                </label>
+                {{ form.showcase_video_1 }}
+              </div>
+              <div>
+                <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
+                  Vidéo #2
+                </label>
+                {{ form.showcase_video_2 }}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="flex items-center justify-end gap-3 pt-5 border-t border-white/10 mt-2">

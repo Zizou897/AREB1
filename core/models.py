@@ -20,6 +20,16 @@ class SiteSettings(models.Model):
         'Disponible pour de nouveaux projets', default=True,
         help_text="Contrôle le statut affiché sur le site (pastille verte du hero et de la section À propos)."
     )
+    showcase_video_1 = models.ForeignKey(
+        'projects.Project', verbose_name='Vidéo IA en avant #1', null=True, blank=True,
+        on_delete=models.SET_NULL, related_name='+', limit_choices_to={'category': 'video'},
+        help_text="Vidéo mise en avant dans la section « De l'Imagination à la Réalité Cinématique »."
+    )
+    showcase_video_2 = models.ForeignKey(
+        'projects.Project', verbose_name='Vidéo IA en avant #2', null=True, blank=True,
+        on_delete=models.SET_NULL, related_name='+', limit_choices_to={'category': 'video'},
+        help_text="Deuxième vidéo mise en avant dans la même section."
+    )
 
     class Meta:
         verbose_name = 'Réglages du site'
