@@ -9,6 +9,7 @@
   <link rel="canonical" href="{{ canonical_url }}">
 
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="{{ site.name }}">
   <meta property="og:locale" content="{% if current_lang == 'en' %}en_US{% else %}fr_FR{% endif %}">
   <meta property="og:title" content="{% block og_title %}{{ t.meta_title }}{% endblock %}">
   <meta property="og:description" content="{% block og_description %}{{ t.meta_description }}{% endblock %}">
@@ -129,7 +130,7 @@
           "@type": "WebSite",
           "@id": "{{ site_url }}/#website",
           "url": "{{ site_url }}/",
-          "name": "{{ site.name }} — Portfolio",
+          "name": "{{ site.name }}",
           "inLanguage": "{% if current_lang == 'en' %}en-US{% else %}fr-FR{% endif %}",
           "publisher": { "@id": "{{ site_url }}/#person" }
         }
