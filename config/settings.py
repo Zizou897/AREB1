@@ -17,6 +17,9 @@ CSRF_TRUSTED_ORIGINS = list(set(
     [f'http://{h.strip()}' for h in ALLOWED_HOSTS if h.strip() not in ('localhost', '127.0.0.1', '*')]
 ))
 
+# Domaine canonique utilisé pour les balises SEO (canonical, og:url, sitemap, schema.org)
+SITE_URL = config('SITE_URL', default='https://azeezridwan.tech')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'django_htmx',
     'core',
     'projects',
@@ -34,6 +38,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'core.middleware.CanonicalHostMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

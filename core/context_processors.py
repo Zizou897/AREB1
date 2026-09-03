@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from .models import SiteSettings
 from .translations import get_translation
 
@@ -26,4 +28,6 @@ def site_info(request):
         'current_lang': current_lang,
         'other_lang': other_lang,
         't': t,
+        'site_url': settings.SITE_URL,
+        'canonical_url': f'{settings.SITE_URL}{request.path}',
     }

@@ -1,4 +1,5 @@
-from django.http import HttpResponseRedirect
+from django.conf import settings
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 from contact.forms import ContactForm
@@ -53,6 +54,17 @@ def set_language(request, lang_code):
 
 def legal(request):
     return render(request, 'pages/legal.html')
+
+
+def robots_txt(request):
+    lines = [
+        'User-agent: *',
+        'Disallow: /dashboard/',
+        'Disallow: /admin/',
+        '',
+        f'Sitemap: {settings.SITE_URL}/sitemap.xml',
+    ]
+    return HttpResponse('\n'.join(lines), content_type='text/plain')
 
 
 def page_not_found(request, exception=None):

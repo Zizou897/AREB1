@@ -24,13 +24,6 @@
     <!-- Header Actions & Controls -->
     <div class="flex items-center gap-2.5 sm:gap-3.5">
       
-      <!-- Theme Toggle (Light / Dark) -->
-      <button id="theme-toggle" type="button" aria-label="Basculer le thème" title="Changer de thème"
-              class="w-9 h-9 rounded-full flex items-center justify-center bg-surface-container border border-white/10 text-on-surface-variant hover:text-white transition-all duration-200 shadow-sm focus:outline-none cursor-pointer">
-        <span class="theme-icon-dark material-symbols-outlined text-[18px]">light_mode</span>
-        <span class="theme-icon-light material-symbols-outlined text-[18px]" style="display:none;">dark_mode</span>
-      </button>
-
       <!-- Language Switcher Pill -->
       <div class="flex items-center p-1 rounded-full bg-surface-container border border-white/10 font-mono text-xs" role="group" aria-label="Language selector">
         <a href="{% url 'core:set_language' 'fr' %}"
@@ -84,17 +77,8 @@
       <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="{% url 'core:home' %}#services">{{ t.nav.services }}</a>
       <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="{% url 'core:home' %}#about">{{ t.nav.about }}</a>
       <a class="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-white/5 hover:text-white transition-colors" href="{% url 'core:home' %}#contact">{{ t.nav.contact }}</a>
-      
-      <div class="pt-3 pb-2 border-t border-white/10 flex items-center justify-between">
-        <button id="theme-toggle-mobile" type="button" aria-label="Basculer le thème"
-                class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container border border-white/10 font-mono text-xs text-on-surface-variant hover:text-white transition-all">
-          <span class="theme-icon-dark material-symbols-outlined text-[16px]">light_mode</span>
-          <span class="theme-icon-light material-symbols-outlined text-[16px]" style="display:none;">dark_mode</span>
-          <span>Thème</span>
-        </button>
-      </div>
 
-      <div class="pt-2">
+      <div class="pt-3 border-t border-white/10">
         <a href="{% url 'core:home' %}#contact" class="btn-studio-primary w-full justify-center text-xs py-3">
           {{ t.nav.start_project }}
           <span class="material-symbols-outlined text-[16px]">arrow_outward</span>

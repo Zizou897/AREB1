@@ -1,18 +1,23 @@
 {% load static %}<!DOCTYPE html>
-<html lang="{{ current_lang|default:'fr' }}" class="scroll-smooth">
+<html lang="{{ current_lang|default:'fr' }}" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{{ t.meta_title|default:'Azeez Ridwan — Développeur Python/Django & Créateur IA · Abidjan' }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ t.meta_description|default:'Portfolio Azeez Ridwan — Développeur Python/Django et créateur vidéo IA.' }}{% endblock %}">
 
+  <link rel="canonical" href="{{ canonical_url }}">
+
   <meta property="og:type" content="website">
   <meta property="og:locale" content="{% if current_lang == 'en' %}en_US{% else %}fr_FR{% endif %}">
   <meta property="og:title" content="{% block og_title %}{{ t.meta_title }}{% endblock %}">
   <meta property="og:description" content="{% block og_description %}{{ t.meta_description }}{% endblock %}">
-  <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'img/og.png' %}{% endblock %}">
-  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  <meta property="og:image" content="{% block og_image %}{{ site_url }}{% static 'img/og.png' %}{% endblock %}">
+  <meta property="og:url" content="{{ canonical_url }}">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ t.meta_title }}">
+  <meta name="twitter:description" content="{{ t.meta_description }}">
+  <meta name="twitter:image" content="{{ site_url }}{% static 'img/og.png' %}">
 
   <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
   <link rel="apple-touch-icon" href="{% static 'img/logo.png' %}">
@@ -21,22 +26,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
-
-  <!-- Anti-FOUC Theme Script -->
-  <script>
-    (function() {
-      try {
-        var theme = localStorage.getItem('theme');
-        if (theme === 'light') {
-          document.documentElement.classList.add('light');
-          document.documentElement.classList.remove('dark');
-        } else {
-          document.documentElement.classList.add('dark');
-          document.documentElement.classList.remove('light');
-        }
-      } catch (e) {}
-    })();
-  </script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -111,6 +100,43 @@
   <link rel="stylesheet" href="{% static 'css/custom.css' %}">
   <script src="{% static 'js/htmx.min.js' %}" defer></script>
   <script src="{% static 'js/main.js' %}" defer></script>
+
+  {% block schema %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "{{ site_url }}/#person",
+          "name": "{{ site.name }}",
+          "jobTitle": "Développeur Python/Django & Créateur IA",
+          "url": "{{ site_url }}/",
+          "image": "{{ site_url }}{% static 'img/portrait.jpg' %}",
+          "email": "mailto:{{ site.email }}",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Abidjan",
+            "addressCountry": "CI"
+          },
+          "sameAs": [
+            {% if site.linkedin %}"{{ site.linkedin }}"{% if site.github %},{% endif %}{% endif %}
+            {% if site.github %}"{{ site.github }}"{% endif %}
+          ],
+          "knowsAbout": ["Python", "Django", "HTMX", "PostgreSQL", "API REST", "Production vidéo IA"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "{{ site_url }}/#website",
+          "url": "{{ site_url }}/",
+          "name": "{{ site.name }} — Portfolio",
+          "inLanguage": "{% if current_lang == 'en' %}en-US{% else %}fr-FR{% endif %}",
+          "publisher": { "@id": "{{ site_url }}/#person" }
+        }
+      ]
+    }
+  </script>
+  {% endblock %}
 </head>
 <body class="bg-background text-on-surface font-sans antialiased selection:bg-white/20 selection:text-white"
       hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>

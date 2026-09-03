@@ -410,52 +410,9 @@
     });
   }
 
-  /* ---------- Theme Toggle (Light / Dark) ---------- */
-
-  function setupThemeToggle() {
-    var toggles = document.querySelectorAll('#theme-toggle, #theme-toggle-mobile, [data-theme-toggle]');
-    if (!toggles.length) return;
-
-    function applyTheme(theme) {
-      if (theme === 'light') {
-        document.documentElement.classList.add('light');
-        document.documentElement.classList.remove('dark');
-      } else {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-      }
-      try {
-        localStorage.setItem('theme', theme);
-      } catch (e) {}
-      updateIcons();
-    }
-
-    function updateIcons() {
-      var isLight = document.documentElement.classList.contains('light');
-      document.querySelectorAll('.theme-icon-dark').forEach(function (el) {
-        el.style.display = isLight ? 'none' : 'inline-block';
-      });
-      document.querySelectorAll('.theme-icon-light').forEach(function (el) {
-        el.style.display = isLight ? 'inline-block' : 'none';
-      });
-    }
-
-    toggles.forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        var current = document.documentElement.classList.contains('light') ? 'light' : 'dark';
-        var next = current === 'light' ? 'dark' : 'light';
-        applyTheme(next);
-      });
-    });
-
-    updateIcons();
-  }
-
   /* ---------- Init ---------- */
 
   document.addEventListener('DOMContentLoaded', function () {
-    setupThemeToggle();
     setupReveals(document);
     setupCounters(document);
     setupMagnetic(document);
