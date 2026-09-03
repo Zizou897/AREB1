@@ -58,7 +58,7 @@
         <span class="badge-mono text-[9px] bg-black/70 backdrop-blur-md text-white border-white/20">
           {{ project.get_category_display }}
         </span>
-        {% if project.video_url %}
+        {% if project.video_file or project.video_url %}
         <span class="badge-mono text-[9px] bg-violet-500/80 backdrop-blur-md text-white border-violet-400/30 flex items-center gap-1">
           <span class="material-symbols-outlined text-[11px]">play_circle</span> Vidéo
         </span>

@@ -87,9 +87,17 @@
 
           <div data-field-for-category="video">
             <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
-              URL Vidéo (YouTube ou Vimeo)
+              Fichier vidéo
             </label>
-            {{ form.video_url }}
+            {{ form.video_file }}
+            {% if object.video_file %}
+            <div class="mt-2 flex items-center gap-2 text-xs font-mono text-on-surface-variant">
+              <span class="material-symbols-outlined text-[16px]">movie</span>
+              Vidéo actuelle : {{ object.video_file.name|slice:"-40:" }}
+            </div>
+            {% endif %}
+            <p class="text-[11px] font-mono text-on-surface-variant mt-1">MP4 recommandé, vidéo déjà compressée (voir limite d'upload serveur).</p>
+            {% if form.video_file.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.video_file.errors.0 }}</span>{% endif %}
           </div>
 
           <div class="md:col-span-2" data-field-for-category="web">

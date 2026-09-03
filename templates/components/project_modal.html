@@ -8,8 +8,15 @@
       <span class="material-symbols-outlined text-[20px]">close</span>
     </button>
 
-    <!-- Media Header (Video embed or Full width thumbnail) -->
-    {% if project.category == 'video' and project.video_url %}
+    <!-- Media Header (Uploaded video, legacy YouTube/Vimeo embed, or Full width thumbnail) -->
+    {% if project.category == 'video' and project.video_file %}
+    <div class="relative bg-black aspect-video w-full">
+      <video src="{{ project.video_file.url }}"
+             {% if project.thumbnail %}poster="{{ project.thumbnail.url }}"{% endif %}
+             class="h-full w-full border-b border-white/10" controls autoplay playsinline preload="metadata">
+      </video>
+    </div>
+    {% elif project.category == 'video' and project.video_url %}
     <div class="relative bg-black aspect-video w-full">
       <iframe src="{{ project.video_embed_url }}" title="Vidéo : {{ project.title }}"
               class="h-full w-full border-b border-white/10" allow="accelerometer; autoplay; encrypted-media; picture-in-picture"

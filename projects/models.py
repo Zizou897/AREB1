@@ -18,8 +18,10 @@ class Project(models.Model):
     stack = models.JSONField('Stack / Outils', default=list,
                              help_text='Liste JSON, ex. ["Django", "PostgreSQL"]')
     live_url = models.URLField('URL du site', blank=True)
-    video_url = models.URLField('URL de la vidéo', blank=True,
-                                help_text='Lien YouTube ou Vimeo pour les vidéos IA')
+    video_url = models.URLField('URL de la vidéo (ancien format)', blank=True,
+                                help_text='Lien YouTube ou Vimeo — conservé pour les anciens projets, préférer le fichier vidéo ci-dessous.')
+    video_file = models.FileField('Fichier vidéo', upload_to='projects/videos/', blank=True,
+                                  help_text='Vidéo à uploader directement (MP4, compressée). Lue dans une pop-up au clic.')
     thumbnail = models.ImageField('Miniature', upload_to='projects/')
     featured = models.BooleanField('Mis en avant', default=False)
     order = models.PositiveIntegerField('Ordre', default=0)
