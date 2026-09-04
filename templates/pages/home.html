@@ -354,7 +354,13 @@
             hx-get="{% url 'projects:detail' flagship_video.pk %}" hx-target="#modal-root" hx-swap="innerHTML"
             aria-label="{{ t.modal.watch_video|default:'Voir le spot' }} : {{ flagship_video.title }}">
       <div class="relative w-full aspect-[16/9] lg:aspect-[21/9] rounded-lg overflow-hidden bg-surface-container-highest isolate shadow-md">
-        {% if flagship_video.thumbnail %}
+        {% if flagship_video.video_file %}
+        <video class="bento-bg-img absolute inset-0 h-full w-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+               src="{{ flagship_video.video_file.url }}"
+               {% if flagship_video.thumbnail %}poster="{{ flagship_video.thumbnail.url }}"{% endif %}
+               autoplay muted loop playsinline preload="auto" aria-hidden="true">
+        </video>
+        {% elif flagship_video.thumbnail %}
         <img src="{{ flagship_video.thumbnail.url }}" alt="{{ flagship_video.title }}"
              class="bento-bg-img absolute inset-0 h-full w-full object-cover opacity-85 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
              loading="lazy" width="1600" height="686">
@@ -390,7 +396,13 @@
               hx-get="{% url 'projects:detail' video.pk %}" hx-target="#modal-root" hx-swap="innerHTML"
               aria-label="{{ t.modal.watch_video|default:'Voir le spot' }} : {{ video.title }}">
         <div class="relative w-full aspect-[16/10] rounded-lg overflow-hidden mb-6 bg-surface-container-high">
-          {% if video.thumbnail %}
+          {% if video.video_file %}
+          <video class="bento-bg-img absolute inset-0 h-full w-full object-cover opacity-85 group-hover:opacity-100 transition-all duration-700"
+                 src="{{ video.video_file.url }}"
+                 {% if video.thumbnail %}poster="{{ video.thumbnail.url }}"{% endif %}
+                 autoplay muted loop playsinline preload="auto" aria-hidden="true">
+          </video>
+          {% elif video.thumbnail %}
           <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}"
                class="bento-bg-img absolute inset-0 h-full w-full object-cover opacity-85 group-hover:opacity-100 transition-all duration-700"
                loading="lazy" width="800" height="500">
