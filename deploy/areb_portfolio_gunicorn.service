@@ -9,7 +9,7 @@ User=www-data
 Group=www-data
 
 WorkingDirectory=/var/www/AREB1
-ExecStart=/var/www/AREB1/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8004 --access-logfile /var/log/gunicorn/AREB1_access.log --error-logfile /var/log/gunicorn/AREB1_error.log config.wsgi:application
+ExecStart=/var/www/AREB1/venv/bin/gunicorn --workers 3 --timeout 300 --bind 127.0.0.1:8004 --access-logfile /var/log/gunicorn/AREB1_access.log --error-logfile /var/log/gunicorn/AREB1_error.log config.wsgi:application
 Restart=on-failure
 RestartSec=5
 

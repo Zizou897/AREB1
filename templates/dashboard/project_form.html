@@ -64,7 +64,7 @@
         <h3 class="font-headline font-semibold text-sm text-white uppercase tracking-wider mb-4">Médias & Liens Live</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           
-          <div class="md:col-span-2">
+          <div class="md:col-span-2" data-field-for-category="web">
             <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
               Miniature / Image de couverture <span class="text-rose-400">*</span>
             </label>
@@ -85,7 +85,7 @@
             {{ form.live_url }}
           </div>
 
-          <div data-field-for-category="video">
+          <div class="md:col-span-2" data-field-for-category="video">
             <label class="block font-mono text-xs uppercase tracking-wider text-on-surface-variant mb-2">
               Fichier vidéo
             </label>
@@ -96,7 +96,7 @@
               Vidéo actuelle : {{ object.video_file.name|slice:"-40:" }}
             </div>
             {% endif %}
-            <p class="text-[11px] font-mono text-on-surface-variant mt-1">MP4 recommandé, vidéo déjà compressée (voir limite d'upload serveur).</p>
+            <p class="text-[11px] font-mono text-on-surface-variant mt-1">MP4 recommandé, vidéo déjà compressée. La miniature est générée automatiquement depuis la vidéo.</p>
             {% if form.video_file.errors %}<span class="text-rose-400 text-xs font-mono mt-1 block">{{ form.video_file.errors.0 }}</span>{% endif %}
           </div>
 
