@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from contact.forms import ContactForm
@@ -39,17 +39,6 @@ def home(request):
         'spotlight_videos': showcase_videos[1:],
     }
     return render(request, 'pages/home.html', context)
-
-
-def set_language(request, lang_code):
-    """Bascule la langue active (fr / en) et redirige vers la page précédente."""
-    lang = 'en' if str(lang_code).lower().startswith('en') else 'fr'
-    referer = request.META.get('HTTP_REFERER') or '/'
-    response = HttpResponseRedirect(referer)
-    if hasattr(request, 'session'):
-        request.session['django_language'] = lang
-    response.set_cookie('django_language', lang, max_age=365 * 24 * 60 * 60, samesite='Lax')
-    return response
 
 
 def legal(request):

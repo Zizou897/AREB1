@@ -6,6 +6,9 @@ from projects.models import Project
 
 class StaticViewSitemap(Sitemap):
     changefreq = 'monthly'
+    i18n = True
+    alternates = True
+    x_default = True
 
     def items(self):
         return ['core:home', 'projects:list', 'core:legal']
@@ -20,6 +23,9 @@ class StaticViewSitemap(Sitemap):
 class ProjectSitemap(Sitemap):
     changefreq = 'yearly'
     priority = 0.6
+    i18n = True
+    alternates = True
+    x_default = True
 
     def items(self):
         return Project.objects.all()

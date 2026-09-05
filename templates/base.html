@@ -7,6 +7,9 @@
   <meta name="description" content="{% block meta_description %}{{ t.meta_description|default:'Portfolio Azeez Ridwan — Développeur Python/Django et créateur vidéo IA.' }}{% endblock %}">
 
   <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="alternate" hreflang="fr" href="{{ site_url }}{{ lang_switch_url_fr }}">
+  <link rel="alternate" hreflang="en" href="{{ site_url }}{{ lang_switch_url_en }}">
+  <link rel="alternate" hreflang="x-default" href="{{ site_url }}{{ lang_switch_url_fr }}">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="{{ site.name }}">
