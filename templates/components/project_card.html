@@ -5,7 +5,13 @@
   <button type="button" class="project-thumb relative block w-full cursor-pointer text-left overflow-hidden aspect-[16/10]"
           hx-get="{% url 'projects:detail' project.pk %}" hx-target="#modal-root" hx-swap="innerHTML"
           aria-label="Voir l'étude de cas : {{ project.title }}">
-    {% if project.thumbnail %}
+    {% if project.video_file %}
+    <video class="bento-bg-img absolute inset-0 h-full w-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+           src="{{ project.video_file.url }}"
+           {% if project.thumbnail %}poster="{{ project.thumbnail.url }}"{% endif %}
+           autoplay muted loop playsinline preload="auto" aria-hidden="true">
+    </video>
+    {% elif project.thumbnail %}
     <img src="{{ project.thumbnail.url }}" alt="Aperçu de {{ project.title }}"
          class="bento-bg-img absolute inset-0 h-full w-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
          loading="lazy" width="1200" height="750">
@@ -30,8 +36,8 @@
       {% endif %}
     </div>
 
-    <!-- Center Play Button for Video Projects -->
-    {% if project.category == 'video' %}
+    <!-- Center Play Button for Video Projects (static thumbnail fallback only) -->
+    {% if project.category == 'video' and not project.video_file %}
     <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
       <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center group-hover:scale-115 group-hover:bg-white group-hover:text-background transition-all duration-300 shadow-xl">
         <span class="material-symbols-outlined text-[26px] ml-0.5">play_arrow</span>
