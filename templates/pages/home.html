@@ -367,12 +367,14 @@
         {% endif %}
         <div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent"></div>
 
-        <!-- Play Button Overlay -->
+        {% if not flagship_video.video_file %}
+        <!-- Play Button Overlay (static thumbnail fallback only) -->
         <div class="absolute inset-0 flex items-center justify-center">
           <span class="play-btn-pulse w-20 sm:w-24 h-20 sm:h-24 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-background shadow-lg group-hover:scale-105 group-hover:bg-white transition-all duration-300">
             <span class="material-symbols-outlined text-[40px] ml-1 text-background">play_arrow</span>
           </span>
         </div>
+        {% endif %}
 
         <!-- Video Bottom Metadata -->
         <div class="absolute bottom-0 left-0 p-6 sm:p-10 w-full flex items-end justify-between z-10">
