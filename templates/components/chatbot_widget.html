@@ -1,0 +1,54 @@
+<div id="chatbot-root" class="fixed bottom-5 left-5 sm:bottom-8 sm:left-8 z-40">
+
+  <!-- Floating Toggle Button -->
+  <button type="button" id="chatbot-toggle"
+          class="flex h-14 w-14 items-center justify-center rounded-full bg-white text-background shadow-lg shadow-black/40 transition-all duration-300 hover:scale-105 active:scale-95"
+          aria-expanded="false" aria-controls="chatbot-panel"
+          aria-label="Ouvrir l'assistant IA">
+    <span class="material-symbols-outlined text-[26px]" id="chatbot-toggle-icon">chat_bubble</span>
+  </button>
+
+  <!-- Chat Panel -->
+  <div id="chatbot-panel" class="hidden absolute bottom-[68px] left-0 w-[92vw] max-w-[380px] rounded-2xl border border-white/15 bg-surface-container shadow-2xl shadow-black/60 overflow-hidden flex flex-col" style="height: min(560px, 70vh);">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between gap-3 border-b border-white/10 bg-surface-container-lowest px-5 py-4 shrink-0">
+      <div class="flex items-center gap-2.5">
+        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white">
+          <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+        </span>
+        <div>
+          <p class="font-headline font-semibold text-sm text-white leading-tight">Assistant Azeez</p>
+          <p class="font-mono text-[10px] text-on-surface-variant">Réponses IA · quelques secondes</p>
+        </div>
+      </div>
+      <button type="button" id="chatbot-close" class="text-on-surface-variant hover:text-white transition-colors" aria-label="Fermer">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div id="chatbot-messages" class="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-3">
+      <div class="max-w-[85%] rounded-2xl rounded-tl-sm bg-surface-container-high px-4 py-2.5 text-sm text-on-surface leading-relaxed">
+        Salut&nbsp;👋 Je suis l'assistant d'Azeez. Pose-moi une question sur ses services, ses projets, ou dis-moi ce que tu as en tête&nbsp;!
+      </div>
+    </div>
+
+    <!-- Input Form -->
+    <form id="chatbot-form"
+          hx-post="{% url 'chatbot:send_message' %}"
+          hx-target="#chatbot-messages"
+          hx-swap="beforeend"
+          hx-indicator="#chatbot-indicator"
+          class="border-t border-white/10 p-3 flex items-end gap-2 shrink-0">
+      {% csrf_token %}
+      <textarea name="message" rows="1" required maxlength="800"
+                placeholder="Écris ton message…"
+                class="flex-1 resize-none rounded-xl border border-line bg-surface-2 px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-mute/70 focus:border-cyan focus:outline-none focus:ring-2 focus:ring-cyan/30 transition-colors max-h-24"></textarea>
+      <button type="submit" class="btn-studio-primary shrink-0 h-11 w-11 !p-0 flex items-center justify-center" aria-label="Envoyer">
+        <span id="chatbot-indicator" class="htmx-indicator material-symbols-outlined text-[18px] animate-spin">progress_activity</span>
+        <span class="material-symbols-outlined text-[18px] chatbot-send-icon">arrow_upward</span>
+      </button>
+    </form>
+  </div>
+</div>

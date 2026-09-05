@@ -293,6 +293,7 @@ body.modal-open { overflow: hidden; }
 }
 .htmx-request .htmx-indicator { display: inline-flex; }
 .htmx-indicator { display: none; }
+.htmx-request .chatbot-send-icon { display: none; }
 
 /* ---------- Form Controls ---------- */
 input, textarea, select {

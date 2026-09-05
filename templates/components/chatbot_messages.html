@@ -1,0 +1,15 @@
+{% if user_message %}
+<div class="max-w-[85%] self-end rounded-2xl rounded-tr-sm bg-cyan/15 border border-cyan/20 px-4 py-2.5 text-sm text-white leading-relaxed whitespace-pre-wrap">
+  {{ user_message }}
+</div>
+{% endif %}
+
+{% if reply %}
+<div class="max-w-[85%] rounded-2xl rounded-tl-sm bg-surface-container-high px-4 py-2.5 text-sm text-on-surface leading-relaxed whitespace-pre-wrap">
+  {{ reply }}
+</div>
+{% elif error %}
+<div class="max-w-[85%] rounded-2xl rounded-tl-sm bg-rose-500/10 border border-rose-500/30 px-4 py-2.5 text-sm text-rose-300 leading-relaxed">
+  {{ error }}
+</div>
+{% endif %}

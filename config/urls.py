@@ -19,6 +19,7 @@ urlpatterns = [
     path('robots.txt', core_views.robots_txt, name='robots_txt'),
     path('dashboard/', include('dashboard.urls')),
     path('contact/', include('contact.urls')),
+    path('chatbot/', include('chatbot.urls')),
 ]
 
 urlpatterns += i18n_patterns(

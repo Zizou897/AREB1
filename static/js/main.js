@@ -410,6 +410,57 @@
     });
   }
 
+  function setupChatbot() {
+    var toggle = document.getElementById('chatbot-toggle');
+    var toggleIcon = document.getElementById('chatbot-toggle-icon');
+    var panel = document.getElementById('chatbot-panel');
+    var closeBtn = document.getElementById('chatbot-close');
+    var messages = document.getElementById('chatbot-messages');
+    var form = document.getElementById('chatbot-form');
+    var textarea = form ? form.querySelector('textarea[name="message"]') : null;
+    if (!toggle || !panel) return;
+
+    function open() {
+      panel.classList.remove('hidden');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggleIcon.textContent = 'close';
+      if (textarea) textarea.focus();
+    }
+    function close() {
+      panel.classList.add('hidden');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggleIcon.textContent = 'chat_bubble';
+    }
+
+    toggle.addEventListener('click', function () {
+      panel.classList.contains('hidden') ? open() : close();
+    });
+    if (closeBtn) closeBtn.addEventListener('click', close);
+
+    if (textarea) {
+      textarea.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          if (textarea.value.trim() && form.requestSubmit) form.requestSubmit();
+        }
+      });
+    }
+
+    if (form) {
+      form.addEventListener('htmx:beforeRequest', function () {
+        if (textarea) textarea.value = '';
+      });
+    }
+
+    if (messages) {
+      document.body.addEventListener('htmx:afterSwap', function (event) {
+        if (event.detail.target === messages) {
+          messages.scrollTop = messages.scrollHeight;
+        }
+      });
+    }
+  }
+
   /* ---------- Init ---------- */
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -422,6 +473,7 @@
     setupNav();
     setupFilters();
     setupModal();
+    setupChatbot();
 
     // Ré-applique le reveal / compteurs aux éléments injectés par HTMX (filtres projets)
     document.body.addEventListener('htmx:afterSettle', function (event) {

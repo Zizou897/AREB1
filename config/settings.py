@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'testimonials',
     'contact',
     'dashboard',
+    'chatbot',
 ]
 
 MIDDLEWARE = [
@@ -141,6 +142,9 @@ EMAIL_BACKEND = (
     if EMAIL_HOST else 'django.core.mail.backends.console.EmailBackend'
 )
 CONTACT_RECEIVER_EMAIL = config('CONTACT_RECEIVER_EMAIL', default=EMAIL_HOST_USER)
+
+# Chatbot IA (Google Gemini) — clé sur aistudio.google.com/apikey
+GEMINI_API_KEY = config('GEMINI_API_KEY', default='')
 
 # Coordonnées affichées dans la section contact et le footer
 SITE_INFO = {
