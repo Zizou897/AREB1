@@ -33,6 +33,14 @@ def submit(request):
     if not form.is_valid():
         return render(request, 'components/contact_form.html', {'contact_form': form})
 
+    if form.cleaned_data.get('website'):
+        # Honeypot rempli : quasi certainement un bot. On simule un succès sans
+        # rien sauvegarder ni notifier, pour ne pas révéler le piège.
+        logger.info('Contact honeypot déclenché pour %s', ip)
+        return render(request, 'components/contact_success.html', {
+            'first_name': form.cleaned_data.get('full_name', '').split()[0] or 'là',
+        })
+
     message = form.save()
     notify_new_lead(message)
     return render(request, 'components/contact_success.html', {

@@ -1,5 +1,7 @@
 import logging
 
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
@@ -17,15 +19,30 @@ RATE_LIMITS = [
 ]
 MAX_HISTORY_MESSAGES = 16          # borne le coût/contexte envoyé à l'API
 SESSION_KEY = 'chatbot_history'
+VALID_SERVICE_TYPES = {choice for choice, _ in ContactMessage.SERVICE_CHOICES}
+
+
+def _clean_email(raw_email):
+    """Ne fait jamais confiance aveuglément à un champ produit par le LLM."""
+    email = (raw_email or '').strip()[:254]
+    try:
+        validate_email(email)
+    except ValidationError:
+        return ''
+    return email
 
 
 def _save_lead(lead_data, transcript_excerpt):
+    service_type = lead_data.get('service_type')
+    if service_type not in VALID_SERVICE_TYPES:
+        service_type = 'other'
+
     message = ContactMessage.objects.create(
-        full_name=lead_data.get('full_name', 'Visiteur chatbot'),
-        email=lead_data.get('email', ''),
-        phone=lead_data.get('phone', ''),
-        message=lead_data.get('need_summary', ''),
-        service_type=lead_data.get('service_type') or 'other',
+        full_name=(lead_data.get('full_name') or 'Visiteur chatbot').strip()[:150],
+        email=_clean_email(lead_data.get('email')),
+        phone=(lead_data.get('phone') or '').strip()[:50],
+        message=(lead_data.get('need_summary') or '').strip()[:2000],
+        service_type=service_type,
         notes=f"Capturé automatiquement via le chatbot IA du site.\n\nExtrait de la conversation :\n{transcript_excerpt}",
     )
     notify_new_lead(message, source='Chatbot IA')

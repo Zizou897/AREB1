@@ -1,4 +1,9 @@
 <form id="contact-form" hx-post="{% url 'contact:submit' %}" hx-target="#contact-form" hx-swap="outerHTML" novalidate class="flex flex-col gap-5">
+  <div class="absolute -left-[9999px]" aria-hidden="true">
+    <label for="{{ contact_form.website.id_for_label }}">Site web</label>
+    {{ contact_form.website }}
+  </div>
+
   <div>
     <h3 class="font-headline font-extrabold text-xl sm:text-2xl text-white uppercase tracking-tight">{{ t.contact.form_title }}</h3>
     <p class="mt-1 font-mono text-xs text-on-surface-variant/80">{{ t.contact.form_subtitle }}</p>

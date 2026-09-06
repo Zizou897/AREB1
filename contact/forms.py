@@ -10,6 +10,14 @@ BASE_INPUT = (
 
 
 class ContactForm(forms.ModelForm):
+    # Honeypot anti-spam : champ texte réel (donc rempli par les bots qui remplissent
+    # tout formulaire), mais masqué hors écran en CSS pour rester invisible à un humain.
+    # Ne correspond à aucun champ du modèle — jamais sauvegardé.
+    website = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'tabindex': '-1', 'autocomplete': 'off'}),
+    )
+
     class Meta:
         model = ContactMessage
         fields = ['full_name', 'email', 'message']
