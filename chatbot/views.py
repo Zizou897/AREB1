@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
 from contact.models import ContactMessage
+from contact.notifications import notify_new_lead
 
 from .gemini_client import ask_gemini
 
@@ -37,7 +38,7 @@ def _is_rate_limited(ip):
 
 
 def _save_lead(lead_data, transcript_excerpt):
-    ContactMessage.objects.create(
+    message = ContactMessage.objects.create(
         full_name=lead_data.get('full_name', 'Visiteur chatbot'),
         email=lead_data.get('email', ''),
         phone=lead_data.get('phone', ''),
@@ -45,6 +46,7 @@ def _save_lead(lead_data, transcript_excerpt):
         service_type=lead_data.get('service_type') or 'other',
         notes=f"Capturé automatiquement via le chatbot IA du site.\n\nExtrait de la conversation :\n{transcript_excerpt}",
     )
+    notify_new_lead(message, source='Chatbot IA')
 
 
 @require_POST
