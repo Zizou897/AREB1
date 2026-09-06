@@ -1,8 +1,9 @@
 import logging
 
-from django.core.cache import cache
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
+
+from core.ratelimit import client_ip, is_rate_limited
 
 from .forms import ContactForm
 from .notifications import notify_new_lead
@@ -11,37 +12,17 @@ logger = logging.getLogger(__name__)
 
 # Rate limiting du formulaire : une fenêtre courte contre le double-clic / les bots
 # rapides, une fenêtre longue contre les campagnes de spam soutenues.
-RATE_LIMIT_BURST = (1, 30)       # 1 envoi / 30 secondes par IP
-RATE_LIMIT_SUSTAINED = (5, 3600)  # 5 envois / heure par IP
-
-
-def _client_ip(request):
-    """IP réelle du visiteur derrière le reverse proxy Nginx (X-Real-IP)."""
-    forwarded = request.META.get('HTTP_X_REAL_IP') or request.META.get('HTTP_X_FORWARDED_FOR')
-    if forwarded:
-        return forwarded.split(',')[0].strip()
-    return request.META.get('REMOTE_ADDR', 'unknown')
-
-
-def _is_rate_limited(ip):
-    """Incrémente les compteurs et renvoie True si l'une des limites est dépassée."""
-    for label, (limit, window) in (('burst', RATE_LIMIT_BURST), ('sustained', RATE_LIMIT_SUSTAINED)):
-        key = f'contact_rl_{label}_{ip}'
-        count = cache.get(key)
-        if count is None:
-            cache.set(key, 1, timeout=window)
-        elif count >= limit:
-            return True
-        else:
-            cache.incr(key)
-    return False
+RATE_LIMITS = [
+    ('burst', 1, 30),        # 1 envoi / 30 secondes par IP
+    ('sustained', 5, 3600),  # 5 envois / heure par IP
+]
 
 
 @require_POST
 def submit(request):
     """Soumission HTMX : renvoie le partial succès (ou le formulaire avec erreurs)."""
-    ip = _client_ip(request)
-    if _is_rate_limited(ip):
+    ip = client_ip(request)
+    if is_rate_limited('contact_rl', ip, RATE_LIMITS):
         logger.warning('Contact rate-limited pour %s', ip)
         form = ContactForm(request.POST)
         form.is_valid()

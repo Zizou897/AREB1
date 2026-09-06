@@ -8,7 +8,13 @@ from django.core.files import File
 from django.core.files.uploadedfile import UploadedFile
 
 from core.models import SiteSettings, Skill
-from projects.media_processing import MAX_VIDEO_SIZE, compress_video, extract_thumbnail
+from projects.media_processing import (
+    ALLOWED_VIDEO_EXTENSIONS,
+    MAX_VIDEO_SIZE,
+    compress_video,
+    extract_thumbnail,
+    is_valid_video_file,
+)
 from projects.models import Project
 from testimonials.models import Testimonial
 
@@ -64,6 +70,31 @@ class ProjectForm(forms.ModelForm):
         if not thumbnail and self.cleaned_data.get('category') != 'video':
             raise forms.ValidationError('Ce champ est obligatoire pour un projet web.')
         return thumbnail
+
+    def clean_video_file(self):
+        video = self.cleaned_data.get('video_file')
+        if not video or not isinstance(video, UploadedFile):
+            return video
+
+        ext = Path(video.name).suffix.lower()
+        if ext not in ALLOWED_VIDEO_EXTENSIONS:
+            raise forms.ValidationError(
+                f"Format non supporté ({ext or 'inconnu'}). Formats acceptés : "
+                + ', '.join(sorted(ALLOWED_VIDEO_EXTENSIONS))
+            )
+
+        fd, tmp_path = tempfile.mkstemp(suffix=ext)
+        try:
+            with os.fdopen(fd, 'wb') as tmp:
+                for chunk in video.chunks():
+                    tmp.write(chunk)
+            video.seek(0)
+            if not is_valid_video_file(tmp_path):
+                raise forms.ValidationError("Ce fichier ne semble pas être une vidéo valide ou lisible.")
+        finally:
+            os.unlink(tmp_path)
+
+        return video
 
     def save(self, commit=True):
         instance = super().save(commit=False)

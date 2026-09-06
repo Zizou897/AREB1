@@ -14,7 +14,11 @@
     </div>
 
     <div class="bento-card bg-surface-container border border-white/10 rounded-2xl p-7 sm:p-8">
-      {% if form.errors %}
+      {% if rate_limited %}
+      <div class="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs text-rose-300 font-mono mb-5" role="alert">
+        Trop de tentatives. Merci de réessayer dans quelques minutes.
+      </div>
+      {% elif form.errors %}
       <div class="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-xs text-rose-300 font-mono mb-5" role="alert">
         Identifiants incorrects. Réessaie.
       </div>

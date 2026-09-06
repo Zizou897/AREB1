@@ -1,40 +1,22 @@
 import logging
 
-from django.core.cache import cache
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 
 from contact.models import ContactMessage
 from contact.notifications import notify_new_lead
+from core.ratelimit import client_ip, is_rate_limited
 
 from .gemini_client import ask_gemini
 
 logger = logging.getLogger(__name__)
 
-RATE_LIMIT_BURST = (3, 30)         # 3 messages / 30s par IP
-RATE_LIMIT_SUSTAINED = (30, 3600)  # 30 messages / heure par IP
+RATE_LIMITS = [
+    ('burst', 3, 30),         # 3 messages / 30s par IP
+    ('sustained', 30, 3600),  # 30 messages / heure par IP
+]
 MAX_HISTORY_MESSAGES = 16          # borne le coût/contexte envoyé à l'API
 SESSION_KEY = 'chatbot_history'
-
-
-def _client_ip(request):
-    forwarded = request.META.get('HTTP_X_REAL_IP') or request.META.get('HTTP_X_FORWARDED_FOR')
-    if forwarded:
-        return forwarded.split(',')[0].strip()
-    return request.META.get('REMOTE_ADDR', 'unknown')
-
-
-def _is_rate_limited(ip):
-    for label, (limit, window) in (('burst', RATE_LIMIT_BURST), ('sustained', RATE_LIMIT_SUSTAINED)):
-        key = f'chatbot_rl_{label}_{ip}'
-        count = cache.get(key)
-        if count is None:
-            cache.set(key, 1, timeout=window)
-        elif count >= limit:
-            return True
-        else:
-            cache.incr(key)
-    return False
 
 
 def _save_lead(lead_data, transcript_excerpt):
@@ -51,13 +33,13 @@ def _save_lead(lead_data, transcript_excerpt):
 
 @require_POST
 def send_message(request):
-    ip = _client_ip(request)
+    ip = client_ip(request)
     user_message = (request.POST.get('message') or '').strip()
 
     if not user_message:
         return render(request, 'components/chatbot_messages.html', {'error': None})
 
-    if _is_rate_limited(ip):
+    if is_rate_limited('chatbot_rl', ip, RATE_LIMITS):
         logger.warning('Chatbot rate-limited pour %s', ip)
         return render(request, 'components/chatbot_messages.html', {
             'user_message': user_message,

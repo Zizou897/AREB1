@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
@@ -8,6 +10,7 @@ from django.views.generic import CreateView, DeleteView, ListView, TemplateView,
 
 from contact.models import ContactMessage
 from core.models import SiteSettings, Skill
+from core.ratelimit import client_ip, is_rate_limited
 from projects.models import Project
 from testimonials.models import Testimonial
 
@@ -15,10 +18,30 @@ from .forms import ProjectForm, SiteSettingsForm, SkillForm, TestimonialForm
 
 LOGIN_URL = 'dashboard:login'
 
+logger = logging.getLogger(__name__)
+
+# Protection anti-bruteforce sur la connexion : une fenêtre courte contre les tentatives
+# rapprochées, une longue contre les campagnes soutenues. Compte toute tentative POST,
+# réussie ou non.
+LOGIN_RATE_LIMITS = [
+    ('burst', 5, 60),         # 5 tentatives / minute par IP
+    ('sustained', 15, 3600),  # 15 tentatives / heure par IP
+]
+
 
 class DashboardLoginView(LoginView):
     template_name = 'dashboard/login.html'
     redirect_authenticated_user = True
+
+    def post(self, request, *args, **kwargs):
+        ip = client_ip(request)
+        if is_rate_limited('dashboard_login', ip, LOGIN_RATE_LIMITS):
+            logger.warning('Connexion dashboard rate-limitée pour %s', ip)
+            return self.render_to_response(
+                self.get_context_data(form=self.get_form(), rate_limited=True),
+                status=429,
+            )
+        return super().post(request, *args, **kwargs)
 
     def get_success_url(self):
         return reverse_lazy('dashboard:home')
